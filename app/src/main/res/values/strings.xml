@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">LostArk Upgrade Application</string>
+
+    <!-- 장비 종류 -->
+    <string-array name="type">
+        <item>무기</item>
+        <item>투구</item>
+        <item>상의</item>
+        <item>하의</item>
+        <item>장갑</item>
+        <item>견갑</item>
+    </string-array>
 </resources>
