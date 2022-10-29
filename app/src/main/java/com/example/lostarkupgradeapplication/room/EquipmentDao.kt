@@ -7,8 +7,8 @@ interface EquipmentDao {
     @Query("SELECT * FROM equipment")
     fun getAll(): List<Equipment>
 
-    @Query("SELECT * FROM equipment WHERE uid LIKE :uid")
-    fun findByID(uid: Int): Equipment
+    @Query("SELECT * FROM equipment WHERE type LIKE :type")
+    fun findByType(type: String): Equipment
 
     @Insert
     fun insertAll(vararg equipment: Equipment)

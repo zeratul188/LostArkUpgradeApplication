@@ -15,4 +15,8 @@ data class Equipment (
     @ColumnInfo(name = "honer") var honer: Int?,
     @ColumnInfo(name = "statue") var statue: Int?,
     @ColumnInfo(name = "stack") var stack: Int?
-)
+) {
+    fun getProgress(): Int {
+        return power?.times(100)?.toInt() ?: 0
+    }
+}

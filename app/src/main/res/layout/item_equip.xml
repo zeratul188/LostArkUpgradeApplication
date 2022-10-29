@@ -8,13 +8,14 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/background_item"
         android:padding="15dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/layoutMain"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="50dp"
@@ -44,23 +45,36 @@
                     android:textSize="10sp"
                     android:textColor="@color/sub_text"/>
                 <ProgressBar
-                    android:id="@+id/progress2"
+                    android:id="@+id/progressPower"
                     style="@android:style/Widget.ProgressBar.Horizontal"
                     android:layout_width="130dp"
                     android:layout_height="6dp"
                     android:layout_marginTop="5dp"
-                    android:progress="@{equipment.power*100}"
+                    android:progress="@{equipment.getProgress()}"
                     android:progressDrawable="@drawable/progress_style"
                     android:max="10000"/>
             </LinearLayout>
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/txtUpgrade"
-                android:text="@{'+'+equipment.level.toString()}"
-                android:gravity="center"
-                android:textColor="@color/text"
-                android:textSize="24sp"/>
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtUpgrade"
+                    android:text="@{'+'+equipment.level.toString()}"
+                    android:layout_gravity="right"
+                    android:textColor="@color/text"
+                    android:textSize="24sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtLevel"
+                    android:text="@{&quot;Lv.&quot;+equipment.itemlevel.toString()}"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

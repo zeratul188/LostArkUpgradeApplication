@@ -9,10 +9,12 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Customized Colors -->
-    <color name="stroke">aaaaaa</color>
+    <color name="stroke">#aaaaaa</color>
     <color name="trans_stroke">#80aaaaaa</color>
     <color name="background">#ffffff</color>
+    <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
+    <color name="progress_focus">#9E8C17</color>
     <color name="background_progress">#888888</color>
 
     <!-- Font Colors -->
@@ -22,13 +24,11 @@
 
     <!-- 등급별 색상(시작) -->
     <color name="grade_abv_start">#25334E</color>
-    <color name="grade_rare_start">#4C2253</color>
     <color name="grade_hero_start">#553C30</color>
     <color name="grade_relics_start">#322722</color>
     <color name="grade_ancient_start">#696757</color>
     <!-- 등급별 색상(끝) -->
     <color name="grade_abv_end">#3171EF</color>
-    <color name="grade_rare_end">#C818E7</color>
     <color name="grade_hero_end">#FF854D</color>
     <color name="grade_relics_end">#9E3905</color>
     <color name="grade_ancient_end">#F6ECA2</color>
