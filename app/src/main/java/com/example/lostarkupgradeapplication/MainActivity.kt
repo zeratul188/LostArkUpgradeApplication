@@ -9,9 +9,7 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lostarkupgradeapplication.databinding.ActivityMainBinding
-import com.example.lostarkupgradeapplication.room.Equipment
-import com.example.lostarkupgradeapplication.room.EquipmentDao
-import com.example.lostarkupgradeapplication.room.EquipmentDatabase
+import com.example.lostarkupgradeapplication.room.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: EquipmentDatabase
     private lateinit var dao: EquipmentDao
+    private lateinit var materialDB: MaterialDatabase
+    private lateinit var materialDao: MaterialDao
     private var items = ArrayList<Equipment>()
     private lateinit var equipmentAdapter: EquipmentRecyclerAdapter
 
@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         db = EquipmentDatabase.getInstance(this)!!
         dao = db?.equipmentDao()!!
+        materialDB = MaterialDatabase.getInstance(this)!!
+        materialDao = materialDB?.materialDao()!!
 
         CoroutineScope(Dispatchers.IO).launch {
             items = (dao?.getAll() as ArrayList<Equipment>?)!!
@@ -66,6 +68,27 @@ class MainActivity : AppCompatActivity() {
                 items.addAll(list)
                 handler.post {
                     equipmentAdapter.notifyDataSetChanged()
+                }
+            }
+            var materials = materialDao.getAll()
+            if (materials.isEmpty()) {
+                val mts = ArrayList<Material>()
+                mts.add(Material(1, "파편", 0, 0))
+                mts.add(Material(2, "파괴", 1, 0))
+                mts.add(Material(3, "파괴", 3, 0))
+                mts.add(Material(4, "파괴", 4, 0))
+                mts.add(Material(5, "수호", 1, 0))
+                mts.add(Material(6, "수호", 3, 0))
+                mts.add(Material(7, "수호", 4, 0))
+                for (i in 1..4) {
+                    mts.add(Material(7+i, "돌파석", i, 0))
+                }
+                for (i in 1..4) {
+                    mts.add(Material(11+i, "융합재료", i, 0))
+                }
+                mts.add(Material(16, "골드", 0, 0))
+                mts.forEach { material ->
+                    materialDB.materialDao().insertAll(material)
                 }
             }
         }

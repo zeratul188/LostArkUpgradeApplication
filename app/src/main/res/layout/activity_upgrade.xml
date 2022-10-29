@@ -24,12 +24,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="24sp"
-                    android:layout_height="24sp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/power"
-                    android:layout_marginRight="5dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,15 +38,38 @@
                 android:progressDrawable="@drawable/power_seekbar_style"
                 android:layout_marginTop="5dp"
                 android:thumb="@drawable/power_seekbar_thumb"/>
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtPowerStatue"
-                android:text="@{upgradeViewModel.powerSeek+&quot;/&quot;+upgradeViewModel.maxSeek}"
-                android:textSize="14sp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/text"
-                android:layout_gravity="right"/>
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/power"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtHonerCount"
+                    android:text="999999"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/text"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtPowerStatue"
+                    android:text="@{upgradeViewModel.powerSeek+&quot;/&quot;+upgradeViewModel.maxSeek}"
+                    android:textSize="14sp"
+                    android:textColor="@color/text"
+                    android:layout_gravity="center|right"/>
+            </LinearLayout>
             <android.widget.Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
