@@ -55,10 +55,6 @@ class UpgradeActivity : AppCompatActivity() {
         materialDao = materialDB?.materialDao()!!
 
         upgradeDBAdapter = UpgradeDBAdapter(this)
-        var outType = type
-        if (outType != "무기") {
-            outType = "방어구"
-        }
 
         val seekHonerChangeObservable = binding.seekPower.changeEvents()
         val seekHonerSubcription: Disposable = seekHonerChangeObservable
@@ -109,6 +105,14 @@ class UpgradeActivity : AppCompatActivity() {
         }
         viewModel.equipment.observe(this, equipmentObserver)
 
+        syncData()
+    }
+
+    fun syncData() {
+        var outType = type
+        if (outType != "무기") {
+            outType = "방어구"
+        }
         CoroutineScope(Dispatchers.IO).launch {
             equipment = dao?.findByType(type)!!
             upgradeDBAdapter.open()
