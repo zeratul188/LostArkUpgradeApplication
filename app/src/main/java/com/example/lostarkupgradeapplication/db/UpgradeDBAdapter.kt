@@ -36,7 +36,7 @@ class UpgradeDBAdapter {
         loadDatabase.close()
     }
 
-    fun getItem(type: String, step: Int): Upgrade? {
+    fun getItem(type: String, step: Int, level: Int): Upgrade? {
         var upgrade: Upgrade? = null
         try {
             val sql = "SELECT * FROM $table_name"
@@ -44,26 +44,28 @@ class UpgradeDBAdapter {
             val cursor: Cursor = db.rawQuery(sql, null)
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    upgrade = Upgrade(
-                        cursor.getString(1),
-                        cursor.getInt(2),
-                        cursor.getInt(3),
-                        cursor.getDouble(4),
-                        cursor.getInt(5),
-                        cursor.getInt(6),
-                        cursor.getInt(7),
-                        cursor.getInt(8),
-                        cursor.getInt(9),
-                        cursor.getInt(10),
-                        cursor.getInt(11),
-                        cursor.getDouble(12),
-                        cursor.getDouble(13),
-                        cursor.getDouble(14),
-                        cursor.getInt(15),
-                        cursor.getInt(16),
-                        cursor.getInt(17),
-                        cursor.getInt(18)
-                    )
+                    if (type == cursor.getString(1) && step == cursor.getInt(2) && level == cursor.getInt(3)) {
+                        upgrade = Upgrade(
+                            cursor.getString(1),
+                            cursor.getInt(2),
+                            cursor.getInt(3),
+                            cursor.getDouble(4),
+                            cursor.getInt(5),
+                            cursor.getInt(6),
+                            cursor.getInt(7),
+                            cursor.getInt(8),
+                            cursor.getInt(9),
+                            cursor.getInt(10),
+                            cursor.getInt(11),
+                            cursor.getDouble(12),
+                            cursor.getDouble(13),
+                            cursor.getDouble(14),
+                            cursor.getInt(15),
+                            cursor.getInt(16),
+                            cursor.getInt(17),
+                            cursor.getInt(18)
+                        )
+                    }
                 }
             }
         } catch (e: SQLException) {

@@ -38,10 +38,22 @@ class EquipmentRecyclerAdapter(
                 val equip_position = equips.indexOf(item.type)+1
                 imgEquip.setImageResource(context.resources.getIdentifier("eq${equip_position}_${item.statue}", "drawable", context.packageName))
                 when(item.statue) {
-                    1 -> txtName.setTextColor(context.resources.getColor(R.color.grade_abv_end))
-                    2 -> txtName.setTextColor(context.resources.getColor(R.color.grade_hero_end))
-                    3 -> txtName.setTextColor(context.resources.getColor(R.color.grade_relics_end))
-                    4 -> txtName.setTextColor(context.resources.getColor(R.color.grade_ancient_end))
+                    1 -> {
+                        txtName.setTextColor(context.resources.getColor(R.color.grade_abv_end))
+                        imgEquip.setBackgroundResource(R.drawable.background_adv)
+                    }
+                    2 -> {
+                        txtName.setTextColor(context.resources.getColor(R.color.grade_hero_end))
+                        imgEquip.setBackgroundResource(R.drawable.background_hero)
+                    }
+                    3 -> {
+                        txtName.setTextColor(context.resources.getColor(R.color.grade_relics_end))
+                        imgEquip.setBackgroundResource(R.drawable.background_relics)
+                    }
+                    4 -> {
+                        txtName.setTextColor(context.resources.getColor(R.color.grade_ancient_end))
+                        imgEquip.setBackgroundResource(R.drawable.background_ancient)
+                    }
                     else -> txtName.setTextColor(context.resources.getColor(R.color.text))
                 }
                 layoutMain.setOnClickListener {

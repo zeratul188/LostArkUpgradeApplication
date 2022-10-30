@@ -106,9 +106,11 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         CoroutineScope(Dispatchers.IO).launch {
-            items.clear()
             val list = dao?.getAll()!!
+            items.clear()
+            println(items.size.toString())
             items.addAll(list)
+            println(items.size.toString())
             handler.post {
                 equipmentAdapter.notifyDataSetChanged()
             }

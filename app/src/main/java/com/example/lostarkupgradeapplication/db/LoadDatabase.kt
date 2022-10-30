@@ -14,7 +14,7 @@ import java.io.OutputStream
 class LoadDatabase: SQLiteOpenHelper {
     var name = "null"
     var context: Context
-    val root = App.context().packageName+"/databases/"
+    val root = "/data/data/${App.context().packageName}/databases/"
 
     lateinit var mDatabase: SQLiteDatabase
 
@@ -49,7 +49,7 @@ class LoadDatabase: SQLiteOpenHelper {
             inputStream.close()
         } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("Error(IOException)", "Error Content : $e")
+            Log.d("Error-LoadDatabase", "Error Content : $e")
         }
     }
 
