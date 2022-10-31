@@ -78,6 +78,7 @@
                 android:background="@drawable/button_style"
                 style="?android:attr/borderlessButtonStyle"
                 android:enabled="false"
+                android:textSize="14sp"
                 android:text="경험치 적용"
                 android:textColor="@color/text"/>
         </LinearLayout>
@@ -232,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="10dp">
                 <ImageView
                     android:layout_width="30sp"
                     android:layout_height="30sp"
@@ -261,6 +262,22 @@
                     android:textSize="18sp"
                     android:textColor="@color/text"/>
             </LinearLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chkInfinity"
+                android:text="재료 무제한"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+            <android.widget.Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/btnFill"
+                android:text="부족한 재료 채우기"
+                android:background="@drawable/button_style"
+                style="?android:attr/borderlessButtonStyle"
+                android:textSize="14sp"
+                android:textColor="@color/text"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -278,6 +295,7 @@
                 android:enabled="false"
                 android:text="계승하기"
                 android:layout_marginRight="5dp"
+                android:textSize="14sp"
                 android:textColor="@color/text"/>
             <android.widget.Button
                 android:layout_width="0dp"
@@ -288,6 +306,7 @@
                 android:background="@drawable/button_style"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginLeft="5dp"
+                android:textSize="14sp"
                 android:text="장비 재련"
                 android:enabled="false"
                 android:textColor="@color/text"/>

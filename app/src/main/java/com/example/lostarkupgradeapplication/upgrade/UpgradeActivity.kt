@@ -15,6 +15,7 @@ import com.example.lostarkupgradeapplication.room.*
 import com.example.lostarkupgradeapplication.upgrade.objects.Tierup
 import com.example.lostarkupgradeapplication.upgrade.objects.Upgrade
 import com.jakewharton.rxbinding4.widget.changeEvents
+import com.jakewharton.rxbinding4.widget.checkedChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -39,6 +40,7 @@ class UpgradeActivity : AppCompatActivity() {
 
     private lateinit var upgrade: Upgrade
     private val handler = Handler()
+    private var isInfinity = false
 
     private var myCompositeDisposable = CompositeDisposable()
 
@@ -59,6 +61,23 @@ class UpgradeActivity : AppCompatActivity() {
 
         upgradeDBAdapter = UpgradeDBAdapter(this)
         tierupDBAdapter = TierupDBAdapter(this)
+
+        val chkInfinityChangeObservable = binding.chkInfinity.checkedChanges()
+        val chkInfinitySubscription: Disposable = chkInfinityChangeObservable
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    isInfinity = it
+                },
+                onComplete = {
+
+                },
+                onError = {
+                    Log.d("RXError", "Error : $it")
+                    it.printStackTrace()
+                }
+            )
+        myCompositeDisposable.add(chkInfinitySubscription)
 
         val seekHonerChangeObservable = binding.seekPower.changeEvents()
         val seekHonerSubcription: Disposable = seekHonerChangeObservable
