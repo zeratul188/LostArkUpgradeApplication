@@ -9,8 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.lostarkupgradeapplication.R
 import com.example.lostarkupgradeapplication.databinding.ActivityUpgradeBinding
+import com.example.lostarkupgradeapplication.db.TierupDBAdapter
 import com.example.lostarkupgradeapplication.db.UpgradeDBAdapter
 import com.example.lostarkupgradeapplication.room.*
+import com.example.lostarkupgradeapplication.upgrade.objects.Tierup
 import com.example.lostarkupgradeapplication.upgrade.objects.Upgrade
 import com.jakewharton.rxbinding4.widget.changeEvents
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -33,6 +35,7 @@ class UpgradeActivity : AppCompatActivity() {
     private lateinit var materialDB: MaterialDatabase
     private lateinit var materialDao: MaterialDao
     private lateinit var upgradeDBAdapter: UpgradeDBAdapter
+    private lateinit var tierupDBAdapter: TierupDBAdapter
 
     private lateinit var upgrade: Upgrade
     private val handler = Handler()
@@ -55,6 +58,7 @@ class UpgradeActivity : AppCompatActivity() {
         materialDao = materialDB?.materialDao()!!
 
         upgradeDBAdapter = UpgradeDBAdapter(this)
+        tierupDBAdapter = TierupDBAdapter(this)
 
         val seekHonerChangeObservable = binding.seekPower.changeEvents()
         val seekHonerSubcription: Disposable = seekHonerChangeObservable
@@ -68,6 +72,8 @@ class UpgradeActivity : AppCompatActivity() {
                                 binding.seekPower.progress = equipment.honer!!
                             } else if (binding.seekPower.progress > haveHoner) {
                                 binding.seekPower.progress = haveHoner
+                                binding.btnApplyPower.isEnabled = false
+                            } else if (equipment.honer == binding.seekPower.max) {
                                 binding.btnApplyPower.isEnabled = false
                             } else {
                                 viewModel.powerSeek.value = binding.seekPower.progress
@@ -105,7 +111,73 @@ class UpgradeActivity : AppCompatActivity() {
         }
         viewModel.equipment.observe(this, equipmentObserver)
 
+        binding.btnTearUp.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                tierupDBAdapter.open()
+                val afterStep = tierupDBAdapter.getItem(equipment.statue, equipment.level)?.after
+                tierupDBAdapter.close()
+                equipment.statue++
+                if (afterStep != null) {
+                    equipment.level = afterStep
+                }
+                reset()
+                dao?.update(equipment)
+                syncData()
+            }
+        }
+
+        binding.btnApplyPower.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                var outType = type
+                if (outType != "무기") {
+                    outType = "방어구"
+                }
+                upgradeDBAdapter.open()
+                upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
+                upgradeDBAdapter.close()
+                val material = materialDao.findItem("파편", 0)
+                material.count -= upgrade.experience
+                materialDao.update(material)
+                equipment.honer = upgrade.experience
+                dao.update(equipment)
+                handler.post {
+                    checkHoner()
+                    binding.btnApplyPower.isEnabled = false
+                    binding.txtHoner.text = "${upgrade.fragments}/${material.count}"
+                    if (upgrade.fragments > material.count) {
+                        binding.txtHoner.setTextColor(resources.getColor(R.color.warning_text))
+                    } else {
+                        binding.txtHoner.setTextColor(resources.getColor(R.color.text))
+                    }
+                }
+            }
+        }
+
         syncData()
+    }
+
+    fun checkHoner() {
+        var outType = type
+        if (outType != "무기") {
+            outType = "방어구"
+        }
+        upgradeDBAdapter.open()
+        upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
+        upgradeDBAdapter.close()
+        binding.btnUpgrade.isEnabled = upgrade.experience == equipment.honer
+    }
+
+    fun reset() {
+        equipment.power = 0.0
+        equipment.honer = 0
+        equipment.stack = 0
+    }
+
+    fun checkTierup() {
+        tierupDBAdapter.open()
+        val tier = tierupDBAdapter.getItem(equipment.statue, equipment.level)
+        tierupDBAdapter.close()
+        binding.btnTearUp.isEnabled = tier != null
     }
 
     fun syncData() {
@@ -115,6 +187,10 @@ class UpgradeActivity : AppCompatActivity() {
         }
         CoroutineScope(Dispatchers.IO).launch {
             equipment = dao?.findByType(type)!!
+            handler.post {
+                checkTierup()
+                checkHoner()
+            }
             upgradeDBAdapter.open()
             upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
             upgradeDBAdapter.close()
@@ -146,7 +222,6 @@ class UpgradeActivity : AppCompatActivity() {
                     seekPower.progress = equipment.honer!!
                     txtHonerCount.text = haveHoner.toString()
                     viewModel.maxSeek.value = upgrade.experience
-                    println("Honer : ${equipment.honer}, Max : ${upgrade.experience}")
 
                     //강화석
                     var upf = 1

@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtUpgrade"
-                    android:text="@{'+'+equipment.level.toString()}"
+                    android:text="@{&quot;+&quot;+equipment.level}"
                     android:layout_gravity="right"
                     android:textColor="@color/text"
                     android:textSize="24sp"/>
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtLevel"
-                    android:text="@{&quot;Lv.&quot;+equipment.itemlevel.toString()}"
+                    android:text="@{&quot;Lv.&quot;+equipment.itemlevel}"
                     android:textColor="@color/text"
                     android:textSize="16sp"/>
             </LinearLayout>
