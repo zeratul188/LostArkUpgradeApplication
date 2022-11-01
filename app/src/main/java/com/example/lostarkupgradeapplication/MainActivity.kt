@@ -13,6 +13,7 @@ import com.example.lostarkupgradeapplication.room.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Math.floor
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
@@ -41,9 +42,11 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             items = (dao?.getAll() as ArrayList<Equipment>?)!!
             equipmentAdapter = EquipmentRecyclerAdapter(items, applicationContext)
-            binding.listView.adapter = equipmentAdapter
-            val spaceDecoration = VerticalSpaceItemDecoration(20)
-            binding.listView.addItemDecoration(spaceDecoration)
+            handler.post {
+                binding.listView.adapter = equipmentAdapter
+                val spaceDecoration = VerticalSpaceItemDecoration(20)
+                binding.listView.addItemDecoration(spaceDecoration)
+            }
         }
 
         initData()
@@ -56,12 +59,12 @@ class MainActivity : AppCompatActivity() {
             if (list.isEmpty()) {
                 val types = resources.getStringArray(R.array.type)
                 var index = 1
+                var level = 0.0
                 println(types.size)
                 types.forEach {
                     val item = Equipment(index, "기본 $it", it, 6, 1325, 0.0, 0, 1, 0)
                     index++
                     db?.equipmentDao()?.insertAll(item)
-                    println("Added item $it ##################")
                 }
                 list = dao?.getAll()!!
                 items.clear()
@@ -87,6 +90,9 @@ class MainActivity : AppCompatActivity() {
                     mts.add(Material(11+i, "융합재료", i, 0))
                 }
                 mts.add(Material(16, "골드", 0, 0))
+                for (i in 1..3) {
+                    mts.add(Material(16+i, "태양", i, 0))
+                }
                 mts.forEach { material ->
                     materialDB.materialDao().insertAll(material)
                 }
@@ -107,11 +113,16 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         CoroutineScope(Dispatchers.IO).launch {
             val list = dao?.getAll()!!
+            var level = 0.0
             items.clear()
-            println(items.size.toString())
             items.addAll(list)
-            println(items.size.toString())
+            list.forEach { item ->
+                level += item.itemlevel
+            }
+            level /= items.size
+            level = floor(level*100)/100
             handler.post {
+                binding.txtAllLevel.text = "Lv.$level"
                 equipmentAdapter.notifyDataSetChanged()
             }
         }

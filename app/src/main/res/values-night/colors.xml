@@ -16,6 +16,8 @@
     <color name="progress">#F6D91C</color>
     <color name="progress_focus">#9E8C17</color>
     <color name="background_progress">#888888</color>
+    <color name="upgrade_progress">#0EA1E6</color>
+    <color name="upgrade_progress_background">#666666</color>
 
     <!-- Font Colors -->
     <color name="text">#ffffff</color>

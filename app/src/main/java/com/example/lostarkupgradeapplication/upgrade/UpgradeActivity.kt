@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -23,6 +24,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Math.floor
 
 class UpgradeActivity : AppCompatActivity() {
     private val viewModel: UpgradeViewModel by viewModels()
@@ -125,10 +127,51 @@ class UpgradeActivity : AppCompatActivity() {
                 txtNowPlusStatue.text = "${data.level?.plus(1)} 단계"
                 txtName.text = "+${data.level} ${data.name}"
                 txtLevel.text = "Lv.${data.itemlevel}"
-                txtPower.text = "${data.getProgress()}%"
+                if (data.power >= 100) {
+                    txtPower.text = "100%"
+                } else {
+                    txtPower.text = "${floor(data.power*100)/100}%"
+                }
             }
         }
         viewModel.equipment.observe(this, equipmentObserver)
+
+        binding.btnUpgrade.setOnClickListener {
+            val dialog = UpgradeDialog(this, materialDao, upgrade, equipment, dao, myCompositeDisposable, this)
+            dialog.setOnClickListener(object : UpgradeDialog.OnDialogClickListener {
+                override fun onClicked() {
+                    var up = equipment.statue!!
+                    if (up == 2) {
+                        up = 1
+                    }
+                    var outType = type
+                    if (outType != "무기") {
+                        outType = "방어구"
+                    }
+                    var enforce = "파괴"
+                    if (outType != "무기") {
+                        enforce = "수호"
+                    }
+                    val haveHoner = materialDao.findItem("파편", 0)
+                    val haveUp = materialDao.findItem(enforce, up)
+                    val haveStone = materialDao.findItem("돌파석", equipment.statue!!)
+                    val haveFusion = materialDao.findItem("융합재료", equipment.statue!!)
+                    val haveGold = materialDao.findItem("골드", 0)
+                    haveHoner.count -= upgrade.fragments
+                    haveUp.count -= upgrade.enforce
+                    haveStone.count -= upgrade.stone
+                    haveFusion.count -= upgrade.ingredient
+                    haveGold.count -= upgrade.gold
+                    materialDao.update(haveHoner)
+                    materialDao.update(haveUp)
+                    materialDao.update(haveStone)
+                    materialDao.update(haveFusion)
+                    materialDao.update(haveGold)
+                    syncData()
+                }
+            })
+            dialog.show()
+        }
 
         binding.btnTearUp.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
@@ -141,6 +184,51 @@ class UpgradeActivity : AppCompatActivity() {
                 }
                 reset()
                 dao?.update(equipment)
+                syncData()
+            }
+        }
+
+        binding.btnFill.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                var outType = type
+                if (outType != "무기") {
+                    outType = "방어구"
+                }
+                val haveHoner = materialDao.findItem("파편", 0) // 소지중인 명에의 파편
+                var up = equipment.statue!!
+                if (up == 2) {
+                    up = 1
+                }
+                var enforce = "파괴"
+                if (outType != "무기") {
+                    enforce = "수호"
+                }
+                val haveUp = materialDao.findItem(enforce, up)
+                val haveStone = materialDao.findItem("돌파석", equipment.statue!!)
+                val haveFusion = materialDao.findItem("융합재료", equipment.statue!!)
+                val haveGold = materialDao.findItem("골드", 0)
+
+                if (haveHoner.count < upgrade.fragments) {
+                    haveHoner.count = upgrade.fragments
+                }
+                if (haveUp.count < upgrade.enforce) {
+                    haveUp.count = upgrade.enforce
+                }
+                if (haveStone.count < upgrade.stone) {
+                    haveStone.count = upgrade.stone
+                }
+                if (haveFusion.count < upgrade.ingredient) {
+                    haveFusion.count = upgrade.ingredient
+                }
+                if (haveGold.count < upgrade.gold) {
+                    haveGold.count < upgrade.gold
+                }
+                materialDao.update(haveHoner)
+                materialDao.update(haveUp)
+                materialDao.update(haveStone)
+                materialDao.update(haveFusion)
+                materialDao.update(haveGold)
+
                 syncData()
             }
         }
@@ -163,6 +251,7 @@ class UpgradeActivity : AppCompatActivity() {
                     checkHoner()
                     binding.btnApplyPower.isEnabled = false
                     binding.txtHoner.text = "${upgrade.fragments}/${material.count}"
+                    binding.txtHonerCount.text = "${material.count}"
                     if (upgrade.fragments > material.count) {
                         binding.txtHoner.setTextColor(resources.getColor(R.color.warning_text))
                     } else {
@@ -181,9 +270,37 @@ class UpgradeActivity : AppCompatActivity() {
             outType = "방어구"
         }
         upgradeDBAdapter.open()
-        upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
+        if (upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1)) != null) {
+            upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
+            if (upgrade.experience == equipment.honer) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val haveHoner = materialDao.findItem("파편", 0).count // 소지중인 명에의 파편
+                    var up = equipment.statue!!
+                    if (up == 2) {
+                        up = 1
+                    }
+                    var enforce = "파괴"
+                    if (outType != "무기") {
+                        enforce = "수호"
+                    }
+                    val haveUp = materialDao.findItem(enforce, up).count
+                    val haveStone = materialDao.findItem("돌파석", equipment.statue!!).count
+                    val haveFusion = materialDao.findItem("융합재료", equipment.statue!!).count
+                    val haveGold = materialDao.findItem("골드", 0).count
+
+                    handler.post {
+                        binding.btnUpgrade.isEnabled = haveHoner >= upgrade.fragments &&
+                                haveUp >= upgrade.enforce &&
+                                haveStone >= upgrade.stone &&
+                                haveFusion >= upgrade.ingredient &&
+                                haveGold >= upgrade.gold
+                    }
+                }
+            } else {
+                binding.btnUpgrade.isEnabled = false
+            }
+        }
         upgradeDBAdapter.close()
-        binding.btnUpgrade.isEnabled = upgrade.experience == equipment.honer
     }
 
     fun reset() {
@@ -206,94 +323,110 @@ class UpgradeActivity : AppCompatActivity() {
         }
         CoroutineScope(Dispatchers.IO).launch {
             equipment = dao?.findByType(type)!!
+            upgradeDBAdapter.open()
             handler.post {
                 checkTierup()
                 checkHoner()
             }
-            upgradeDBAdapter.open()
-            upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
-            upgradeDBAdapter.close()
-            val haveHoner = materialDao.findItem("파편", 0).count // 소지중인 명에의 파편
-            var up = equipment.statue!!
-            if (up == 2) {
-                up = 1
-            }
-            val haveUp = materialDao.findItem("파괴", up).count
-            val haveStone = materialDao.findItem("돌파석", equipment.statue!!).count
-            val haveFusion = materialDao.findItem("융합재료", equipment.statue!!).count
-            val haveGold = materialDao.findItem("골드", 0).count
-            runOnUiThread {
-                viewModel.equipment.value = equipment
-                viewModel.powerSeek.value = equipment.honer
-                with(binding) {
-                    val equips = resources.getStringArray(R.array.type)
-                    val equip_position = equips.indexOf(equipment.type)+1
-                    imgEquip.setImageResource(resources.getIdentifier("eq${equip_position}_${equipment.statue}", "drawable", packageName))
-                    when(equipment.statue) {
-                        1 -> imgEquip.setBackgroundResource(R.drawable.background_adv)
-                        2 -> imgEquip.setBackgroundResource(R.drawable.background_hero)
-                        3 -> imgEquip.setBackgroundResource(R.drawable.background_relics)
-                        4 -> imgEquip.setBackgroundResource(R.drawable.background_ancient)
-                    }
+            if (upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1)) != null) {
+                upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
+                val haveHoner = materialDao.findItem("파편", 0).count // 소지중인 명에의 파편
+                var up = equipment.statue!!
+                if (up == 2) {
+                    up = 1
+                }
+                var enforce = "파괴"
+                if (outType != "무기") {
+                    enforce = "수호"
+                }
+                val haveUp = materialDao.findItem(enforce, up).count
+                val haveStone = materialDao.findItem("돌파석", equipment.statue!!).count
+                val haveFusion = materialDao.findItem("융합재료", equipment.statue!!).count
+                val haveGold = materialDao.findItem("골드", 0).count
+                runOnUiThread {
+                    binding.layoutHoner.visibility = View.VISIBLE
+                    binding.layoutMain.visibility = View.VISIBLE
+                    binding.txtWarning.visibility = View.GONE
+                    viewModel.equipment.value = equipment
+                    viewModel.powerSeek.value = equipment.honer
+                    with(binding) {
+                        val equips = resources.getStringArray(R.array.type)
+                        val equip_position = equips.indexOf(equipment.type)+1
+                        imgEquip.setImageResource(resources.getIdentifier("eq${equip_position}_${equipment.statue}", "drawable", packageName))
+                        when(equipment.statue) {
+                            1 -> imgEquip.setBackgroundResource(R.drawable.background_adv)
+                            2 -> imgEquip.setBackgroundResource(R.drawable.background_hero)
+                            3 -> imgEquip.setBackgroundResource(R.drawable.background_relics)
+                            4 -> imgEquip.setBackgroundResource(R.drawable.background_ancient)
+                        }
 
-                    //명예의 파편 경험치
-                    seekPower.max = upgrade.experience
-                    seekPower.progress = equipment.honer!!
-                    txtHonerCount.text = haveHoner.toString()
-                    viewModel.maxSeek.value = upgrade.experience
+                        //명예의 파편 경험치
+                        seekPower.max = upgrade.experience
+                        seekPower.progress = equipment.honer!!
+                        txtHonerCount.text = haveHoner.toString()
+                        viewModel.maxSeek.value = upgrade.experience
 
-                    //강화석
-                    var upf = 1
-                    if (outType != "무기") {
-                        upf = 2
-                    }
-                    var downf = equipment.statue
-                    if (downf == 2) {
-                        downf = 1
-                    }
-                    imgUp.setImageResource(resources.getIdentifier("up${upf}_${downf}", "drawable", packageName))
-                    txtUp.text = "${upgrade.enforce}\n/${haveUp}"
-                    if (upgrade.enforce > haveUp) {
-                        txtUp.setTextColor(resources.getColor(R.color.warning_text))
-                    } else {
-                        txtUp.setTextColor(resources.getColor(R.color.text))
-                    }
+                        //강화석
+                        var upf = 1
+                        if (outType != "무기") {
+                            upf = 2
+                        }
+                        var downf = equipment.statue
+                        if (downf == 2) {
+                            downf = 1
+                        }
+                        imgUp.setImageResource(resources.getIdentifier("up${upf}_${downf}", "drawable", packageName))
+                        txtUp.text = "${upgrade.enforce}\n/${haveUp}"
+                        if (upgrade.enforce > haveUp) {
+                            txtUp.setTextColor(resources.getColor(R.color.warning_text))
+                        } else {
+                            txtUp.setTextColor(resources.getColor(R.color.text))
+                        }
 
-                    //돌파석
-                    imgStone.setImageResource(resources.getIdentifier("stone${equipment.statue}", "drawable", packageName))
-                    txtStone.text = "${upgrade.stone}\n/${haveStone}"
-                    if (upgrade.stone > haveStone) {
-                        txtStone.setTextColor(resources.getColor(R.color.warning_text))
-                    } else {
-                        txtStone.setTextColor(resources.getColor(R.color.text))
-                    }
+                        //돌파석
+                        imgStone.setImageResource(resources.getIdentifier("stone${equipment.statue}", "drawable", packageName))
+                        txtStone.text = "${upgrade.stone}\n/${haveStone}"
+                        if (upgrade.stone > haveStone) {
+                            txtStone.setTextColor(resources.getColor(R.color.warning_text))
+                        } else {
+                            txtStone.setTextColor(resources.getColor(R.color.text))
+                        }
 
-                    //융합재료
-                    imgFusion.setImageResource(resources.getIdentifier("fusion${equipment.statue}", "drawable", packageName))
-                    txtFusion.text = "${upgrade.ingredient}\n/${haveFusion}"
-                    if (upgrade.ingredient > haveFusion) {
-                        txtFusion.setTextColor(resources.getColor(R.color.warning_text))
-                    } else {
-                        txtFusion.setTextColor(resources.getColor(R.color.text))
-                    }
+                        //융합재료
+                        imgFusion.setImageResource(resources.getIdentifier("fusion${equipment.statue}", "drawable", packageName))
+                        txtFusion.text = "${upgrade.ingredient}\n/${haveFusion}"
+                        if (upgrade.ingredient > haveFusion) {
+                            txtFusion.setTextColor(resources.getColor(R.color.warning_text))
+                        } else {
+                            txtFusion.setTextColor(resources.getColor(R.color.text))
+                        }
 
-                    //명예의 파편, 골드
-                    txtHoner.text = "${upgrade.fragments}/${haveHoner}"
-                    if (upgrade.fragments > haveHoner) {
-                        txtHoner.setTextColor(resources.getColor(R.color.warning_text))
-                    } else {
-                        txtHoner.setTextColor(resources.getColor(R.color.text))
-                    }
-                    txtGold.text = "${upgrade.gold}/${haveGold}"
-                    if (upgrade.gold > haveGold) {
-                        txtGold.setTextColor(resources.getColor(R.color.warning_text))
-                    } else {
-                        txtGold.setTextColor(resources.getColor(R.color.text))
-                    }
+                        //명예의 파편, 골드
+                        txtHoner.text = "${upgrade.fragments}/${haveHoner}"
+                        if (upgrade.fragments > haveHoner) {
+                            txtHoner.setTextColor(resources.getColor(R.color.warning_text))
+                        } else {
+                            txtHoner.setTextColor(resources.getColor(R.color.text))
+                        }
+                        txtGold.text = "${upgrade.gold}/${haveGold}"
+                        if (upgrade.gold > haveGold) {
+                            txtGold.setTextColor(resources.getColor(R.color.warning_text))
+                        } else {
+                            txtGold.setTextColor(resources.getColor(R.color.text))
+                        }
 
-                    executePendingBindings()
+                        executePendingBindings()
+                    }
+                }
+            } else {
+                handler.post {
+                    binding.layoutHoner.visibility = View.GONE
+                    binding.layoutMain.visibility = View.GONE
+                    binding.txtWarning.visibility = View.VISIBLE
+                    binding.btnUpgrade.isEnabled = false
                 }
             }
+            upgradeDBAdapter.close()
         }
     }
 
