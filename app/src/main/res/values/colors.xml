@@ -18,6 +18,7 @@
     <color name="background_progress">#888888</color>
     <color name="upgrade_progress">#0EA1E6</color>
     <color name="upgrade_progress_background">#cccccc</color>
+    <color name="fab">#5f70be</color>
 
     <!-- Font Colors -->
     <color name="text">#000000</color>

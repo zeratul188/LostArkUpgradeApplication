@@ -10,4 +10,23 @@
         <item>장갑</item>
         <item>견갑</item>
     </string-array>
+
+    <string-array name="names">
+        <item>명예의 파편</item>
+        <item>파괴석 결정</item>
+        <item>파괴강석</item>
+        <item>정제된 파괴강석</item>
+        <item>수호석 결정</item>
+        <item>수호강석</item>
+        <item>정제된 수호강석</item>
+        <item>명예의 돌파석</item>
+        <item>위대한 명예의 돌파석</item>
+        <item>경이로운 명예의 돌파석</item>
+        <item>찬란한 명예의 돌파석</item>
+        <item>하급 오레하 융화 재료</item>
+        <item>중급 오레하 융화 재료</item>
+        <item>상급 오레하 융화 재료</item>
+        <item>최상급 오레하 융화 재료</item>
+        <item>골드</item>
+    </string-array>
 </resources>
