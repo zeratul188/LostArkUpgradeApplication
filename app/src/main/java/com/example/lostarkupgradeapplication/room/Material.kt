@@ -12,9 +12,4 @@ data class Material(
     @ColumnInfo(name = "type") var type: String,
     @ColumnInfo(name = "tier") var tier: Int,
     @ColumnInfo(name = "count") var count: Int
-) {
-    fun getName(): String {
-        val list = App.context().resources.getStringArray(R.array.names)
-        return list[uid-1]
-    }
-}
+)

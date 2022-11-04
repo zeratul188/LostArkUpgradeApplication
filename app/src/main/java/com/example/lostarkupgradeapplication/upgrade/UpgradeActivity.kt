@@ -89,16 +89,18 @@ class UpgradeActivity : AppCompatActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val haveHoner = materialDao.findItem("파편", 0).count // 소지중인 명에의 파편
                         handler.post {
-                            if (binding.seekPower.progress < equipment.honer!!) {
-                                binding.seekPower.progress = equipment.honer!!
-                            } else if (binding.seekPower.progress > haveHoner) {
-                                binding.seekPower.progress = haveHoner
-                                binding.btnApplyPower.isEnabled = false
-                            } else if (equipment.honer == binding.seekPower.max) {
-                                binding.btnApplyPower.isEnabled = false
-                            } else {
-                                viewModel.powerSeek.value = binding.seekPower.progress
-                                binding.btnApplyPower.isEnabled = binding.seekPower.progress == binding.seekPower.max
+                            if (haveHoner > equipment.honer) {
+                                if (binding.seekPower.progress < equipment.honer!!) {
+                                    binding.seekPower.progress = equipment.honer!!
+                                } else if (binding.seekPower.progress > haveHoner) {
+                                    binding.seekPower.progress = haveHoner
+                                    binding.btnApplyPower.isEnabled = false
+                                } else if (equipment.honer == binding.seekPower.max) {
+                                    binding.btnApplyPower.isEnabled = false
+                                } else {
+                                    viewModel.powerSeek.value = binding.seekPower.progress
+                                    binding.btnApplyPower.isEnabled = binding.seekPower.progress == binding.seekPower.max
+                                }
                             }
                         }
                     }

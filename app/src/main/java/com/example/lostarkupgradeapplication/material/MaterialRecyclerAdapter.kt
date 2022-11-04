@@ -49,6 +49,9 @@ class MaterialRecyclerAdapter(
 
         fun bind(item: Material) {
             with(binding) {
+                val list = App.context().resources.getStringArray(R.array.names)
+                txtName.text = list[item.uid-1]
+                edtCount.hint = item.count.toString()
                 when(item.type) {
                     "파편" -> {
                         imgIcon.setImageResource(R.drawable.power)
@@ -80,7 +83,7 @@ class MaterialRecyclerAdapter(
                         imgIcon.setImageResource(App.context().resources.getIdentifier("sun${item.tier}", "drawable", App.context().packageName))
                     }
                 }
-                val edtCountChangeObservable = binding.edtCount.textChanges()
+                val edtCountChangeObservable = edtCount.textChanges()
                 val edtCountSubscription: Disposable = edtCountChangeObservable
                     .debounce(500, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
@@ -88,7 +91,7 @@ class MaterialRecyclerAdapter(
                         onNext = {
                             if (it.toString() != "") {
                                 item.count = it.toString().toInt()
-                                materialDao.update(item)
+                                Log.d("Change Count", "change value (${list[item.uid-1]}) : ${it.toString().toInt()}")
                             }
                         },
                         onComplete = {
@@ -100,6 +103,7 @@ class MaterialRecyclerAdapter(
                         }
                     )
                 myCompositeDisposable.add(edtCountSubscription)
+                executePendingBindings()
             }
         }
     }

@@ -21,5 +21,15 @@
             android:id="@+id/listView"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"/>
+        <android.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/btnApply"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_style"
+            style="?android:attr/borderlessButtonStyle"
+            android:textSize="14sp"
+            android:text="적용"
+            android:textColor="@color/text"/>
     </LinearLayout>
 </layout>
