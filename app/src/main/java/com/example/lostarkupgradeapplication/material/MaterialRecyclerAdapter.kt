@@ -1,6 +1,8 @@
 package com.example.lostarkupgradeapplication.material
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,16 +25,18 @@ class MaterialRecyclerAdapter(
     private val context: Context,
     private val myCompositeDisposable: CompositeDisposable
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
+    val saveState = HashMap<Int, Int>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMaterialBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, context, myCompositeDisposable)
+        return ViewHolder(binding, context, myCompositeDisposable, saveState)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.apply {
-            bind(item)
+            bind(item, position)
             itemView.tag = item
         }
     }
@@ -42,16 +46,27 @@ class MaterialRecyclerAdapter(
     class ViewHolder(
         private val binding: ItemMaterialBinding,
         private val context: Context,
-        private val myCompositeDisposable: CompositeDisposable
+        private val myCompositeDisposable: CompositeDisposable,
+        private val saveState: HashMap<Int, Int>
     ) : RecyclerView.ViewHolder(binding.root) {
         private val materialDB: MaterialDatabase = MaterialDatabase.getInstance(context)!!
         private val materialDao: MaterialDao = materialDB?.materialDao()!!
 
-        fun bind(item: Material) {
+        fun bind(item: Material, position: Int) {
             with(binding) {
                 val list = App.context().resources.getStringArray(R.array.names)
                 txtName.text = list[item.uid-1]
-                edtCount.hint = item.count.toString()
+                txtCount.text = item.count.toString()
+                //edtCount.addTextChangedListener(null)
+                edtCount.removeTextChangedListener(CountTextWatcher(position))
+                edtCount.addTextChangedListener(CountTextWatcher(position))
+                if (saveState.keys.indexOf(position) != -1) {
+                    edtCount.setText(saveState[position].toString())
+                    println("saveStat($position, ${saveState[position]}) : ${list[item.uid-1]}")
+                } else {
+                    edtCount.setText("")
+                }
+                edtCount.addTextChangedListener(CountTextWatcher(position))
                 when(item.type) {
                     "파편" -> {
                         imgIcon.setImageResource(R.drawable.power)
@@ -83,14 +98,16 @@ class MaterialRecyclerAdapter(
                         imgIcon.setImageResource(App.context().resources.getIdentifier("sun${item.tier}", "drawable", App.context().packageName))
                     }
                 }
-                val edtCountChangeObservable = edtCount.textChanges()
+
+                /*val edtCountChangeObservable = edtCount.textChanges()
                 val edtCountSubscription: Disposable = edtCountChangeObservable
                     .debounce(500, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .subscribeBy(
                         onNext = {
                             if (it.toString() != "") {
-                                item.count = it.toString().toInt()
+                                //item.count = it.toString().toInt()
+                                saveState[position] = it.toString().toInt()
                                 Log.d("Change Count", "change value (${list[item.uid-1]}) : ${it.toString().toInt()}")
                             }
                         },
@@ -102,9 +119,26 @@ class MaterialRecyclerAdapter(
                             it.printStackTrace()
                         }
                     )
-                myCompositeDisposable.add(edtCountSubscription)
-                executePendingBindings()
+                myCompositeDisposable.add(edtCountSubscription)*/
             }
+        }
+
+        inner class CountTextWatcher(private val position: Int) : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.toString() != "") {
+                    saveState[position] = p0.toString().toInt()
+                    Log.d("data saved", "Saved($position) : ${p0.toString().toInt()}")
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
         }
     }
 }

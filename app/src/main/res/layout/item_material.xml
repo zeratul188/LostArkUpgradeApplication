@@ -40,6 +40,27 @@
                     android:textSize="16sp"
                     android:textColor="@color/text"
                     android:layout_marginRight="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="보유 갯수"
+                        android:textSize="8sp"
+                        android:textColor="@color/sub_text"
+                        android:layout_marginRight="3dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtCount"
+                        android:text="999"
+                        android:textSize="14sp"
+                        android:textColor="@color/text"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
