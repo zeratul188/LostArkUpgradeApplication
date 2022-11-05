@@ -54,6 +54,14 @@
                     android:progressDrawable="@drawable/progress_style"
                     android:max="10000"/>
             </LinearLayout>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/btnSetting"
+                android:src="@drawable/ic_baseline_settings_24"
+                android:layout_gravity="center"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_margin="5dp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

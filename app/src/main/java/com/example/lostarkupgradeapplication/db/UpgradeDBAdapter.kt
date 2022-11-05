@@ -36,6 +36,30 @@ class UpgradeDBAdapter {
         loadDatabase.close()
     }
 
+    fun getRange(type: String, tier: Int): Array<Int> {
+        val array = Array<Int>(2) { 0 }
+        try {
+            val sql = "SELECT * FROM $table_name"
+
+            val cursor: Cursor = db.rawQuery(sql, null)
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    if (type == cursor.getString(1) && tier == cursor.getInt(2)) {
+                        val value = cursor.getInt(3)
+                        if (value < array[0]) {
+                            array[0] = value
+                        } else if (value > array[1]) {
+                            array[1] = value
+                        }
+                    }
+                }
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return array
+    }
+
     fun getItem(type: String, step: Int, level: Int): Upgrade? {
         var upgrade: Upgrade? = null
         try {

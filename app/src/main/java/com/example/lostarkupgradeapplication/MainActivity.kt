@@ -9,7 +9,9 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lostarkupgradeapplication.databinding.ActivityMainBinding
+import com.example.lostarkupgradeapplication.equipment.EquipmentRecyclerAdapter
 import com.example.lostarkupgradeapplication.room.*
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var equipmentAdapter: EquipmentRecyclerAdapter
 
     private val handler = Handler()
+    private val myCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             items = (dao?.getAll() as ArrayList<Equipment>?)!!
-            equipmentAdapter = EquipmentRecyclerAdapter(items, applicationContext)
+            equipmentAdapter = EquipmentRecyclerAdapter(items, this@MainActivity, myCompositeDisposable)
             handler.post {
                 binding.listView.adapter = equipmentAdapter
                 val spaceDecoration = VerticalSpaceItemDecoration(20)
@@ -126,6 +129,11 @@ class MainActivity : AppCompatActivity() {
                 equipmentAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onDestroy() {
+        myCompositeDisposable.clear()
+        super.onDestroy()
     }
 
     inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int): RecyclerView.ItemDecoration() {

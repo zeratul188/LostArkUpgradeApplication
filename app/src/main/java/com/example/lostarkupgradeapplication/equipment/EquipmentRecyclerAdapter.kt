@@ -1,23 +1,27 @@
-package com.example.lostarkupgradeapplication
+package com.example.lostarkupgradeapplication.equipment
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lostarkupgradeapplication.App
+import com.example.lostarkupgradeapplication.R
 import com.example.lostarkupgradeapplication.databinding.ItemEquipBinding
 import com.example.lostarkupgradeapplication.room.Equipment
 import com.example.lostarkupgradeapplication.upgrade.UpgradeActivity
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class EquipmentRecyclerAdapter(
     private val items: ArrayList<Equipment>,
-    private val context: Context
+    private val context: Context,
+    private val myCompositeDisposable: CompositeDisposable
 ) : RecyclerView.Adapter<EquipmentRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemEquipBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, context)
+        return ViewHolder(binding, context, myCompositeDisposable)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,7 +34,7 @@ class EquipmentRecyclerAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(private val binding: ItemEquipBinding, private val context: Context) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemEquipBinding, private val context: Context, private val myCompositeDisposable: CompositeDisposable) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Equipment) {
             with(binding) {
                 equipment = item
@@ -60,6 +64,10 @@ class EquipmentRecyclerAdapter(
                     val intent = Intent(App.context(), UpgradeActivity::class.java)
                     intent.putExtra("type", item.type)
                     App.context().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                }
+                btnSetting.setOnClickListener {
+                    val dialog = EditEquipmentDialog(context, item, myCompositeDisposable)
+                    dialog.show()
                 }
                 executePendingBindings()
             }

@@ -26,7 +26,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtBefore"
-                    android:text="0 단계}"
+                    android:text="0 단계"
                     android:textSize="18sp"
                     android:textColor="@color/text"/>
                 <ImageView

@@ -19,6 +19,7 @@
     <color name="upgrade_progress">#0EA1E6</color>
     <color name="upgrade_progress_background">#666666</color>
     <color name="fab">#5f70be</color>
+    <color name="icon">#cccccc</color>
 
     <!-- Font Colors -->
     <color name="text">#ffffff</color>

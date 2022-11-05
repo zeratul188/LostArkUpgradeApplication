@@ -9,6 +9,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lostarkupgradeapplication.CustomToast
 import com.example.lostarkupgradeapplication.R
 import com.example.lostarkupgradeapplication.databinding.ActivityMaterialBinding
 import com.example.lostarkupgradeapplication.room.Material
@@ -51,6 +52,9 @@ class MaterialActivity : AppCompatActivity() {
         }
 
         binding.btnApply.setOnClickListener {
+            val toast = CustomToast(this)
+            toast.createToast("재료값들이 저장되었습니다.", false)
+            toast.show()
             CoroutineScope(Dispatchers.IO).launch {
                 for (i in 0 until materials.size) {
                     if (materialRecyclerAdapter.saveState[i] != null) {

@@ -32,4 +32,11 @@
         <item>태양의 축복</item>
         <item>태양의 가호</item>
     </string-array>
+
+    <string-array name="tier">
+        <item>희귀 ~ 영웅 장비</item>
+        <item>전설 ~ 유물 장비</item>
+        <item>아브렐슈드 장비</item>
+        <item>일리아칸 장비</item>
+    </string-array>
 </resources>

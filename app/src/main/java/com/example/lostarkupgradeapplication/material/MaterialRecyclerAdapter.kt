@@ -65,7 +65,7 @@ class MaterialRecyclerAdapter(
                 //edtCount.removeTextChangedListener(CountTextWatcher(position))
                 if (saveState.keys.indexOf(position) != -1) {
                     edtCount.setText(saveState[position].toString())
-                    println("saveStat($position, ${saveState[position]}) : ${list[item.uid-1]}")
+                    //println("saveStat($position, ${saveState[position]}) : ${list[item.uid-1]}")
                 } else {
                     edtCount.setText("")
                 }
@@ -123,24 +123,6 @@ class MaterialRecyclerAdapter(
                     )
                 myCompositeDisposable.add(edtCountSubscription)
             }
-        }
-
-        inner class CountTextWatcher(private val position: Int) : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString() != "") {
-                    saveState[position] = p0.toString().toInt()
-                    Log.d("data saved", "Saved($position) : ${p0.toString().toInt()}")
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
         }
     }
 }
