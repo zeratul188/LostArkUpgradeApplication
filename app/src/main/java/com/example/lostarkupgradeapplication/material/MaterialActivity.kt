@@ -52,8 +52,11 @@ class MaterialActivity : AppCompatActivity() {
 
         binding.btnApply.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                materials.forEach { material ->
-                    materialDao.update(material)
+                for (i in 0 until materials.size) {
+                    if (materialRecyclerAdapter.saveState[i] != null) {
+                        materials[i].count = materialRecyclerAdapter.saveState[i]!!
+                        materialDao.update(materials[i])
+                    }
                 }
                 finish()
             }
@@ -73,6 +76,8 @@ class MaterialActivity : AppCompatActivity() {
             state: RecyclerView.State
         ) {
             outRect.bottom = verticalSpaceHeight
+            outRect.left = verticalSpaceHeight/2
+            outRect.right = verticalSpaceHeight/2
         }
     }
 }

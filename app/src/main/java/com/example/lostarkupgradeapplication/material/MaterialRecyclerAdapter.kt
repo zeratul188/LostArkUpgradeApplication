@@ -26,11 +26,12 @@ class MaterialRecyclerAdapter(
     private val myCompositeDisposable: CompositeDisposable
 ) : RecyclerView.Adapter<MaterialRecyclerAdapter.ViewHolder>() {
     val saveState = HashMap<Int, Int>()
+    private var edtCountSubscription: Disposable? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMaterialBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, context, myCompositeDisposable, saveState)
+        return ViewHolder(binding, context, myCompositeDisposable, saveState, edtCountSubscription)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -47,7 +48,8 @@ class MaterialRecyclerAdapter(
         private val binding: ItemMaterialBinding,
         private val context: Context,
         private val myCompositeDisposable: CompositeDisposable,
-        private val saveState: HashMap<Int, Int>
+        private val saveState: HashMap<Int, Int>,
+        private var edtCountSubscription: Disposable?
     ) : RecyclerView.ViewHolder(binding.root) {
         private val materialDB: MaterialDatabase = MaterialDatabase.getInstance(context)!!
         private val materialDao: MaterialDao = materialDB?.materialDao()!!
@@ -57,16 +59,17 @@ class MaterialRecyclerAdapter(
                 val list = App.context().resources.getStringArray(R.array.names)
                 txtName.text = list[item.uid-1]
                 txtCount.text = item.count.toString()
-                //edtCount.addTextChangedListener(null)
-                edtCount.removeTextChangedListener(CountTextWatcher(position))
-                edtCount.addTextChangedListener(CountTextWatcher(position))
+                if (edtCountSubscription != null) {
+                    myCompositeDisposable.remove(edtCountSubscription)
+                }
+                //edtCount.removeTextChangedListener(CountTextWatcher(position))
                 if (saveState.keys.indexOf(position) != -1) {
                     edtCount.setText(saveState[position].toString())
                     println("saveStat($position, ${saveState[position]}) : ${list[item.uid-1]}")
                 } else {
                     edtCount.setText("")
                 }
-                edtCount.addTextChangedListener(CountTextWatcher(position))
+                //edtCount.addTextChangedListener(CountTextWatcher(position))
                 when(item.type) {
                     "파편" -> {
                         imgIcon.setImageResource(R.drawable.power)
@@ -98,9 +101,8 @@ class MaterialRecyclerAdapter(
                         imgIcon.setImageResource(App.context().resources.getIdentifier("sun${item.tier}", "drawable", App.context().packageName))
                     }
                 }
-
-                /*val edtCountChangeObservable = edtCount.textChanges()
-                val edtCountSubscription: Disposable = edtCountChangeObservable
+                val edtCountChangeObservable = edtCount.textChanges()
+                edtCountSubscription = edtCountChangeObservable
                     .debounce(500, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .subscribeBy(
@@ -119,7 +121,7 @@ class MaterialRecyclerAdapter(
                             it.printStackTrace()
                         }
                     )
-                myCompositeDisposable.add(edtCountSubscription)*/
+                myCompositeDisposable.add(edtCountSubscription)
             }
         }
 
