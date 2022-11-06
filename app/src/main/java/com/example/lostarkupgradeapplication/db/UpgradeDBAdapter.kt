@@ -38,6 +38,7 @@ class UpgradeDBAdapter {
 
     fun getRange(type: String, tier: Int): Array<Int> {
         val array = Array<Int>(2) { 0 }
+        array[0] = 99
         try {
             val sql = "SELECT * FROM $table_name"
 
@@ -58,6 +59,23 @@ class UpgradeDBAdapter {
             e.printStackTrace()
         }
         return array
+    }
+
+    fun getLevel(type: String, tier: Int, step: Int): Int {
+        var level = -1
+        try {
+            val sql = "SELECT * FROM $table_name"
+
+            val cursor: Cursor = db.rawQuery(sql, null)
+            while (cursor.moveToNext()) {
+                if (type == cursor.getString(1) && tier == cursor.getInt(2) && step == cursor.getInt(3)) {
+                    level = cursor.getInt(18)
+                }
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return level
     }
 
     fun getItem(type: String, step: Int, level: Int): Upgrade? {

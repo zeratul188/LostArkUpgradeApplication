@@ -5,18 +5,21 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
+import com.example.lostarkupgradeapplication.CustomToast
 import com.example.lostarkupgradeapplication.R
 import com.example.lostarkupgradeapplication.databinding.DialogEditBinding
 import com.example.lostarkupgradeapplication.db.UpgradeDBAdapter
 import com.example.lostarkupgradeapplication.room.Equipment
 import com.example.lostarkupgradeapplication.room.EquipmentDatabase
 import com.jakewharton.rxbinding4.widget.itemSelections
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -40,18 +43,6 @@ class EditEquipmentDialog(
     private val dao = database?.equipmentDao()
     private val handler = Handler()
 
-    val name: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
-    val level: MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
-    }
-
-    init {
-        name.value = "+${equipment.level} ${equipment.name}"
-        level.value = equipment.itemlevel
-    }
-
     fun setOnClickListener(listener: OnDialogClickListener) {
         onClickListener = listener
     }
@@ -61,6 +52,8 @@ class EditEquipmentDialog(
         dialog.setContentView(binding.root)
 
         with(binding) {
+            txtName.text = "+${equipment.level} ${equipment.name}"
+            txtLevel.text = "Lv.${equipment.itemlevel}"
             changeTier(this)
             edtName.setText(equipment.name)
             val tiers = context.resources.getStringArray(R.array.tier)
@@ -68,9 +61,18 @@ class EditEquipmentDialog(
             sprTier.adapter = tierAdapter
             sprTier.setSelection(equipment.statue-1)
             setLevel(this)
+            var outType = equipment.type
+            if (outType != "무기") {
+                outType = "방어구"
+            }
+            updateDBAdapter.open()
+            val checkLevel = updateDBAdapter.getRange(outType, equipment.statue)[0]
+            updateDBAdapter.close()
+            sprLevel.setSelection(equipment.level-checkLevel)
+            println("Index : ${equipment.level-checkLevel}")
             val sprTierChangeObservable = sprTier.itemSelections()
             val sprTierSubscription: Disposable = sprTierChangeObservable
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onNext = {
                         equipment.statue = it+1
@@ -80,7 +82,8 @@ class EditEquipmentDialog(
 
                     },
                     onError = {
-
+                        Log.d("RXError", "Error : $it")
+                        it.printStackTrace()
                     }
                 )
             myCompositeDisposable.add(sprTierSubscription)
@@ -88,8 +91,13 @@ class EditEquipmentDialog(
 
         binding.btnApply.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
+                equipment.name = binding.edtName.text.toString()
                 dao?.update(equipment)
                 handler.post {
+                    onClickListener.onClicked()
+                    val toast = CustomToast(context)
+                    toast.createToast("장비의 정보가 수정되었습니다.", false)
+                    toast.show()
                     dialog.dismiss()
                 }
             }
@@ -99,7 +107,7 @@ class EditEquipmentDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.CENTER)
+        dialog.window!!.setGravity(Gravity.BOTTOM)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
         dialog.show()
@@ -115,6 +123,7 @@ class EditEquipmentDialog(
         }
         updateDBAdapter.open()
         val range = updateDBAdapter.getRange(outType, equipment.statue)
+        range[0] -= 1
         updateDBAdapter.close()
         val levels = Array<String>(range[1]-range[0]+1) { "" }
         for (i in levels.indices) {
@@ -124,21 +133,51 @@ class EditEquipmentDialog(
         binding.sprLevel.adapter = levelAdapter
         val sprLevelObservable = binding.sprLevel.itemSelections()
         sprLevelSubscription = sprLevelObservable
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
                     equipment.level = range[0] + it
-                    name.value = "+${equipment.level} ${equipment.name}"
+                    binding.txtName.text = "+${equipment.level} ${equipment.name}"
+                    updateDBAdapter.open()
+                    var iLevel = updateDBAdapter.getLevel(outType, equipment.statue, equipment.level)
+                    updateDBAdapter.close()
+                    if (iLevel == -1) {
+                        iLevel = when(equipment.statue) {
+                            1 -> 1325
+                            2 -> 1370
+                            3 -> 1500
+                            4 -> 1570
+                            else -> {-1}
+                        }
+                    }
+                    binding.txtLevel.text = "Lv.${equipment.itemlevel}"
+                    equipment.itemlevel = iLevel
                 },
                 onComplete = {
 
                 },
                 onError = {
-
+                    Log.d("RXError", "Error : $it")
+                    it.printStackTrace()
                 }
             )
         myCompositeDisposable.add(sprLevelSubscription)
-        binding.sprLevel.setSelection(0)
+        //binding.sprLevel.setSelection(0)
+        updateDBAdapter.open()
+        var iLevel = updateDBAdapter.getLevel(outType, equipment.statue, equipment.level)
+        println("Item Level : ${iLevel}")
+        updateDBAdapter.close()
+        if (iLevel == -1) {
+            iLevel = when(equipment.statue) {
+                1 -> 1325
+                2 -> 1370
+                3 -> 1500
+                4 -> 1570
+                else -> {-1}
+            }
+        }
+        binding.txtLevel.text = "Lv.${equipment.itemlevel}"
+        equipment.itemlevel = iLevel
     }
 
     fun changeTier(binding: DialogEditBinding) {

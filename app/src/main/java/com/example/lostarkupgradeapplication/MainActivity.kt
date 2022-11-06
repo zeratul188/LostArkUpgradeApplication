@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lostarkupgradeapplication.databinding.ActivityMainBinding
 import com.example.lostarkupgradeapplication.equipment.EquipmentRecyclerAdapter
@@ -42,9 +43,14 @@ class MainActivity : AppCompatActivity() {
         materialDB = MaterialDatabase.getInstance(this)!!
         materialDao = materialDB?.materialDao()!!
 
+        val dataObserver = Observer<Double> { data ->
+            binding.txtAllLevel.text = "Lv.$data"
+        }
+        viewModel.allLevel.observe(this, dataObserver)
+
         CoroutineScope(Dispatchers.IO).launch {
             items = (dao?.getAll() as ArrayList<Equipment>?)!!
-            equipmentAdapter = EquipmentRecyclerAdapter(items, this@MainActivity, myCompositeDisposable)
+            equipmentAdapter = EquipmentRecyclerAdapter(items, this@MainActivity, myCompositeDisposable, viewModel)
             handler.post {
                 binding.listView.adapter = equipmentAdapter
                 val spaceDecoration = VerticalSpaceItemDecoration(20)
@@ -124,8 +130,8 @@ class MainActivity : AppCompatActivity() {
             }
             level /= items.size
             level = floor(level*100)/100
+            viewModel.allLevel.postValue(level)
             handler.post {
-                binding.txtAllLevel.text = "Lv.$level"
                 equipmentAdapter.notifyDataSetChanged()
             }
         }
