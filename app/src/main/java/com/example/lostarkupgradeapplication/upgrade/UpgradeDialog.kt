@@ -266,7 +266,7 @@ class UpgradeDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.CENTER)
+        dialog.window!!.setGravity(Gravity.BOTTOM)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
         dialog.show()

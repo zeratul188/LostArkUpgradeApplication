@@ -12,6 +12,7 @@
     <color name="stroke">#aaaaaa</color>
     <color name="trans_stroke">#80aaaaaa</color>
     <color name="background">#ffffff</color>
+    <color name="sub_background">#dddddd</color>
     <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
     <color name="progress_focus">#9E8C17</color>

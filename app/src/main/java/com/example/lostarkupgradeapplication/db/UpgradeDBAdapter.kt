@@ -70,11 +70,13 @@ class UpgradeDBAdapter {
             while (cursor.moveToNext()) {
                 if (type == cursor.getString(1) && tier == cursor.getInt(2) && step == cursor.getInt(3)) {
                     level = cursor.getInt(18)
+                    println("Item Level : ${cursor.getInt(18)}, Tier : ${cursor.getInt(2)}, Step : ${cursor.getInt(3)}")
                 }
             }
         } catch (e: SQLException) {
             e.printStackTrace()
         }
+        println("Result Level : $level")
         return level
     }
 

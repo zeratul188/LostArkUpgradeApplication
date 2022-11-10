@@ -37,6 +37,8 @@ class EditEquipmentDialog(
     private lateinit var onClickListener: OnDialogClickListener
     private lateinit var binding: DialogEditBinding
 
+    private var isInit = true
+
     private val updateDBAdapter = UpgradeDBAdapter(context)
     private var sprLevelSubscription: Disposable? = null
     private val database = EquipmentDatabase.getInstance(context)
@@ -54,22 +56,20 @@ class EditEquipmentDialog(
         with(binding) {
             txtName.text = "+${equipment.level} ${equipment.name}"
             txtLevel.text = "Lv.${equipment.itemlevel}"
-            changeTier(this)
+            //changeTier(this)
             edtName.setText(equipment.name)
             val tiers = context.resources.getStringArray(R.array.tier)
             val tierAdapter = ArrayAdapter(context, R.layout.spr_item, tiers)
             sprTier.adapter = tierAdapter
             sprTier.setSelection(equipment.statue-1)
-            setLevel(this)
-            var outType = equipment.type
+            /*var outType = equipment.type
             if (outType != "무기") {
                 outType = "방어구"
             }
             updateDBAdapter.open()
             val checkLevel = updateDBAdapter.getRange(outType, equipment.statue)[0]
             updateDBAdapter.close()
-            sprLevel.setSelection(equipment.level-checkLevel)
-            println("Index : ${equipment.level-checkLevel}")
+            sprLevel.setSelection(equipment.level-checkLevel)*/
             val sprTierChangeObservable = sprTier.itemSelections()
             val sprTierSubscription: Disposable = sprTierChangeObservable
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -131,6 +131,13 @@ class EditEquipmentDialog(
         }
         val levelAdapter = ArrayAdapter(context, R.layout.spr_item, levels)
         binding.sprLevel.adapter = levelAdapter
+        if (isInit) {
+            binding.sprLevel.setSelection(equipment.level-range[0])
+            isInit = false
+            println("Level : ${equipment.level}, Spr Index : ${equipment.level-range[0]}")
+        } else {
+            println("isInit = False")
+        }
         val sprLevelObservable = binding.sprLevel.itemSelections()
         sprLevelSubscription = sprLevelObservable
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -150,8 +157,8 @@ class EditEquipmentDialog(
                             else -> {-1}
                         }
                     }
-                    binding.txtLevel.text = "Lv.${equipment.itemlevel}"
                     equipment.itemlevel = iLevel
+                    binding.txtLevel.text = "Lv.${equipment.itemlevel}"
                 },
                 onComplete = {
 
@@ -165,7 +172,6 @@ class EditEquipmentDialog(
         //binding.sprLevel.setSelection(0)
         updateDBAdapter.open()
         var iLevel = updateDBAdapter.getLevel(outType, equipment.statue, equipment.level)
-        println("Item Level : ${iLevel}")
         updateDBAdapter.close()
         if (iLevel == -1) {
             iLevel = when(equipment.statue) {
@@ -176,8 +182,8 @@ class EditEquipmentDialog(
                 else -> {-1}
             }
         }
-        binding.txtLevel.text = "Lv.${equipment.itemlevel}"
         equipment.itemlevel = iLevel
+        binding.txtLevel.text = "Lv.${equipment.itemlevel}"
     }
 
     fun changeTier(binding: DialogEditBinding) {
