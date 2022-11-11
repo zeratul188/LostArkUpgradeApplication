@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.mainViewModel = viewModel
+        title = "로스트아크 재련 시뮬레이션"
 
         db = EquipmentDatabase.getInstance(this)!!
         dao = db?.equipmentDao()!!

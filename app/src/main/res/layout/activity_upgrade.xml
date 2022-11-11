@@ -11,127 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:padding="15dp"
         tools:context=".upgrade.UpgradeActivity">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/layoutHoner"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="명예의 파편 경험치"
-                    android:textSize="14sp"
-                    android:textColor="@color/sub_text"/>
-            </LinearLayout>
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:id="@+id/seekPower"
-                android:progressDrawable="@drawable/power_seekbar_style"
-                android:layout_marginTop="5dp"
-                android:thumb="@drawable/power_seekbar_thumb"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/power"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtHonerCount"
-                    android:text="999999"
-                    android:textSize="16sp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/text"/>
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="1dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtPowerStatue"
-                    android:text="@{upgradeViewModel.powerSeek+&quot;/&quot;+upgradeViewModel.maxSeek}"
-                    android:textSize="14sp"
-                    android:textColor="@color/text"
-                    android:layout_gravity="center|right"/>
-            </LinearLayout>
-            <android.widget.Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/btnApplyPower"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_style"
-                style="?android:attr/borderlessButtonStyle"
-                android:enabled="false"
-                android:textSize="14sp"
-                android:text="경험치 적용"
-                android:textColor="@color/text"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/layoutHoner"
-            android:layout_marginTop="20dp"
-            android:id="@+id/layoutMain"
-            android:orientation="vertical">
+            android:id="@+id/layoutItem"
+            android:padding="15dp"
+            android:background="@color/sub_background"
+            app:layout_constraintTop_toTopOf="parent">
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:adjustViewBounds="true"
                 android:id="@+id/imgEquip"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@drawable/background_adv"
                 android:src="@drawable/eq1_1"
                 android:layout_gravity="center"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtNowStatue"
-                    android:text="@{upgradeViewModel.equipment.level+&quot; 단계&quot;}"
-                    android:textColor="@color/text"
-                    android:textSize="24sp"/>
-                <ImageView
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:src="@drawable/ic_baseline_arrow_forward_24"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtNowPlusStatue"
-                    android:text="@{upgradeViewModel.equipment.level+1+&quot; 단계&quot;}"
-                    android:textColor="@color/text"
-                    android:textSize="24sp"/>
-            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtName"
                 android:text="@{&quot;+&quot;+upgradeViewModel.equipment.level+&quot; &quot;+upgradeViewModel.equipment.name}"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/grade_abv_end"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"/>
+                app:layout_constraintLeft_toRightOf="@id/imgEquip"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,24 +47,167 @@
                 android:text="@{&quot;Lv.&quot;+upgradeViewModel.equipment.itemlevel}"
                 android:textColor="@color/text"
                 android:textSize="14sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"/>
+                app:layout_constraintLeft_toRightOf="@id/imgEquip"
+                app:layout_constraintTop_toBottomOf="@id/txtName"
+                android:layout_marginLeft="10dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/layoutStep"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNowStatue"
+                    android:text="@{upgradeViewModel.equipment.level+&quot; 단계&quot;}"
+                    android:textColor="@color/text"
+                    android:textSize="18sp"/>
+                <ImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNowPlusStatue"
+                    android:text="@{upgradeViewModel.equipment.level+1+&quot; 단계&quot;}"
+                    android:textColor="@color/text"
+                    android:textSize="18sp"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="장인의 기운"
-                android:textSize="12sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:id="@+id/txtPowerInfo"
+                android:textSize="10sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutStep"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/sub_text"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:id="@+id/txtPower"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPowerInfo"
                 android:text="@{upgradeViewModel.equipment.getProgress()+&quot;%&quot;}"
                 android:textSize="14sp"
                 android:textColor="@color/text"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/sub_background"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="명예의 파편 경험치"
+                android:textSize="14sp"
+                android:id="@+id/txtPowerInfo2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/sub_text"/>
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/seekPower"
+                android:progressDrawable="@drawable/power_seekbar_style"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@id/txtPowerInfo2"
+                android:thumb="@drawable/power_seekbar_thumb"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/power"
+                android:layout_gravity="center"
+                android:id="@+id/imgHonerInfo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seekPower"
+                app:layout_constraintBottom_toTopOf="@id/btnTearUp"
+                android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="보유 중인 명예의 파편"
+                android:textSize="12sp"
+                android:textColor="@color/sub_text"
+                android:id="@+id/txtHonerInfo"
+                app:layout_constraintLeft_toRightOf="@id/imgHonerInfo"
+                app:layout_constraintTop_toBottomOf="@id/seekPower"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtHonerCount"
+                android:text="999999"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/txtHonerInfo"
+                app:layout_constraintLeft_toLeftOf="@id/txtHonerInfo"
+                android:textColor="@color/text"/>
+            <android.widget.Button
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:id="@+id/btnApplyPower"
+                android:background="@drawable/button_style"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seekPower"
+                app:layout_constraintBottom_toTopOf="@id/btnUpgrade"
+                android:enabled="false"
+                android:textSize="12sp"
+                android:text="경험치 적용"
+                android:textColor="@color/text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtPowerStatue"
+                android:text="@{upgradeViewModel.powerSeek+&quot;/&quot;+upgradeViewModel.maxSeek}"
+                android:textSize="14sp"
+                android:textColor="@color/text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <android.widget.Button
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/btnTearUp"
+                android:background="@drawable/button_style"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtHonerCount"
+                android:enabled="false"
+                android:text="계승하기"
+                android:textSize="14sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text"/>
+            <android.widget.Button
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:id="@+id/btnUpgrade"
+                android:background="@drawable/button_style"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="14sp"
+                android:text="장비 재련"
+                android:enabled="false"
+                android:textColor="@color/text"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layoutItem"
+            android:layout_marginTop="20dp"
+            android:id="@+id/layoutMain"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -278,38 +329,6 @@
                 android:background="@drawable/button_style"
                 style="?android:attr/borderlessButtonStyle"
                 android:textSize="14sp"
-                android:textColor="@color/text"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <android.widget.Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="40dp"
-                android:id="@+id/btnTearUp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_style"
-                style="?android:attr/borderlessButtonStyle"
-                android:enabled="false"
-                android:text="계승하기"
-                android:layout_marginRight="5dp"
-                android:textSize="14sp"
-                android:textColor="@color/text"/>
-            <android.widget.Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="40dp"
-                android:id="@+id/btnUpgrade"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_style"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_marginLeft="5dp"
-                android:textSize="14sp"
-                android:text="장비 재련"
-                android:enabled="false"
                 android:textColor="@color/text"/>
         </LinearLayout>
         <TextView

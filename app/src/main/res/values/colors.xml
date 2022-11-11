@@ -12,7 +12,7 @@
     <color name="stroke">#aaaaaa</color>
     <color name="trans_stroke">#80aaaaaa</color>
     <color name="background">#ffffff</color>
-    <color name="sub_background">#dddddd</color>
+    <color name="sub_background">#f0f0f0</color>
     <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
     <color name="progress_focus">#9E8C17</color>
@@ -25,7 +25,7 @@
     <!-- Font Colors -->
     <color name="text">#000000</color>
     <color name="sub_text">#444444</color>
-    <color name="warning_text">#FF4444</color>
+    <color name="warning_text">#80FF4444</color>
 
     <!-- 등급별 색상(시작) -->
     <color name="grade_abv_start">#25334E</color>

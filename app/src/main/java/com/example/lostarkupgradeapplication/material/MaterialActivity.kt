@@ -5,6 +5,7 @@ import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -34,10 +35,12 @@ class MaterialActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //setContentView(R.layout.activity_material)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_material)
         binding.materialViewModel = viewModel
+        title = "재료 수정"
 
         materialDB = MaterialDatabase.getInstance(this)!!
         materialDao = materialDB?.materialDao()!!
@@ -83,5 +86,15 @@ class MaterialActivity : AppCompatActivity() {
             outRect.left = verticalSpaceHeight/2
             outRect.right = verticalSpaceHeight/2
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean{
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

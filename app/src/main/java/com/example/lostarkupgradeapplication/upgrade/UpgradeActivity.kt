@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -48,10 +49,12 @@ class UpgradeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //setContentView(R.layout.activity_upgrade)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_upgrade)
         binding.upgradeViewModel = viewModel
+        title = "장비 재련"
 
         val intent = intent
         type = intent.getStringExtra("type").toString()
@@ -346,7 +349,8 @@ class UpgradeActivity : AppCompatActivity() {
                 val haveFusion = materialDao.findItem("융합재료", equipment.statue!!).count
                 val haveGold = materialDao.findItem("골드", 0).count
                 runOnUiThread {
-                    binding.layoutHoner.visibility = View.VISIBLE
+                    binding.layoutItem.visibility = View.VISIBLE
+                    binding.seekPower.isEnabled = true
                     binding.layoutMain.visibility = View.VISIBLE
                     binding.txtWarning.visibility = View.GONE
                     viewModel.equipment.value = equipment
@@ -422,7 +426,8 @@ class UpgradeActivity : AppCompatActivity() {
                 }
             } else {
                 handler.post {
-                    binding.layoutHoner.visibility = View.GONE
+                    binding.layoutItem.visibility = View.GONE
+                    binding.seekPower.isEnabled = false
                     binding.layoutMain.visibility = View.GONE
                     binding.txtWarning.visibility = View.VISIBLE
                     binding.btnUpgrade.isEnabled = false
@@ -435,5 +440,15 @@ class UpgradeActivity : AppCompatActivity() {
     override fun onDestroy() {
         myCompositeDisposable.clear()
         super.onDestroy()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean{
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
