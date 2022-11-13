@@ -86,22 +86,25 @@ class MainActivity : AppCompatActivity() {
             var materials = materialDao.getAll()
             if (materials.isEmpty()) {
                 val mts = ArrayList<Material>()
-                mts.add(Material(1, "파편", 0, 0))
-                mts.add(Material(2, "파괴", 1, 0))
-                mts.add(Material(3, "파괴", 3, 0))
-                mts.add(Material(4, "파괴", 4, 0))
-                mts.add(Material(5, "수호", 1, 0))
-                mts.add(Material(6, "수호", 3, 0))
-                mts.add(Material(7, "수호", 4, 0))
+                mts.add(Material(1, "파편", 0, 0, "명예의 파편"))
+                mts.add(Material(2, "파괴", 1, 0, "파괴석 결정"))
+                mts.add(Material(3, "파괴", 3, 0, "파괴강석"))
+                mts.add(Material(4, "파괴", 4, 0, "정제된 파괴강석"))
+                mts.add(Material(5, "수호", 1, 0, "수호석 결정"))
+                mts.add(Material(6, "수호", 3, 0, "수호강석"))
+                mts.add(Material(7, "수호", 4, 0, "정제된 수호강석"))
+                val stones = arrayOf<String>("명예의 돌파석", "위대한 명예의 돌파석", "경이로운 명예의 돌파석", "찬란한 명예의 돌파석")
                 for (i in 1..4) {
-                    mts.add(Material(7+i, "돌파석", i, 0))
+                    mts.add(Material(7+i, "돌파석", i, 0, stones[i-1]))
                 }
+                val fusions = arrayOf("하급 오레하 융화 재료", "중급 오레하 융화 재료", "상급 오레하 융화 재료", "최상급 오레하 융화 재료")
                 for (i in 1..4) {
-                    mts.add(Material(11+i, "융합재료", i, 0))
+                    mts.add(Material(11+i, "융합재료", i, 0, fusions[i-1]))
                 }
-                mts.add(Material(16, "골드", 0, 0))
+                mts.add(Material(16, "골드", 0, 0, "골드"))
+                val suns = arrayOf("태양의 은총", "태양의 축복", "태양의 가호")
                 for (i in 1..3) {
-                    mts.add(Material(16+i, "태양", i, 0))
+                    mts.add(Material(16+i, "태양", i, 0, suns[i-1]))
                 }
                 mts.forEach { material ->
                     materialDB.materialDao().insertAll(material)

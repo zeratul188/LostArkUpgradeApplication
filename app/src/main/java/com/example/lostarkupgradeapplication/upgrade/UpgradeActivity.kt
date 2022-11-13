@@ -43,7 +43,6 @@ class UpgradeActivity : AppCompatActivity() {
 
     private lateinit var upgrade: Upgrade
     private val handler = Handler()
-    private var isInfinity = false
 
     private var myCompositeDisposable = CompositeDisposable()
 
@@ -66,23 +65,6 @@ class UpgradeActivity : AppCompatActivity() {
 
         upgradeDBAdapter = UpgradeDBAdapter(this)
         tierupDBAdapter = TierupDBAdapter(this)
-
-        val chkInfinityChangeObservable = binding.chkInfinity.checkedChanges()
-        val chkInfinitySubscription: Disposable = chkInfinityChangeObservable
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    isInfinity = it
-                },
-                onComplete = {
-
-                },
-                onError = {
-                    Log.d("RXError", "Error : $it")
-                    it.printStackTrace()
-                }
-            )
-        myCompositeDisposable.add(chkInfinitySubscription)
 
         val seekHonerChangeObservable = binding.seekPower.changeEvents()
         val seekHonerSubcription: Disposable = seekHonerChangeObservable
@@ -253,7 +235,9 @@ class UpgradeActivity : AppCompatActivity() {
                 equipment.honer = upgrade.experience
                 dao.update(equipment)
                 handler.post {
+                    upgradeDBAdapter.open()
                     checkHoner()
+                    upgradeDBAdapter.close()
                     binding.btnApplyPower.isEnabled = false
                     binding.txtHoner.text = "${upgrade.fragments}/${material.count}"
                     binding.txtHonerCount.text = "${material.count}"
@@ -274,7 +258,6 @@ class UpgradeActivity : AppCompatActivity() {
         if (outType != "무기") {
             outType = "방어구"
         }
-        upgradeDBAdapter.open()
         if (upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1)) != null) {
             upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
             if (upgrade.experience == equipment.honer) {
@@ -305,7 +288,6 @@ class UpgradeActivity : AppCompatActivity() {
                 binding.btnUpgrade.isEnabled = false
             }
         }
-        upgradeDBAdapter.close()
     }
 
     fun reset() {
@@ -329,9 +311,9 @@ class UpgradeActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             equipment = dao?.findByType(type)!!
             upgradeDBAdapter.open()
+            checkHoner()
             handler.post {
                 checkTierup()
-                checkHoner()
             }
             if (upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1)) != null) {
                 upgrade = upgradeDBAdapter.getItem(outType, equipment.statue!!, equipment.level!!.plus(1))!!
@@ -348,10 +330,18 @@ class UpgradeActivity : AppCompatActivity() {
                 val haveStone = materialDao.findItem("돌파석", equipment.statue!!).count
                 val haveFusion = materialDao.findItem("융합재료", equipment.statue!!).count
                 val haveGold = materialDao.findItem("골드", 0).count
+                
+                val nameUp = materialDao.findItem(enforce, up).name
+                val nameStone = materialDao.findItem("돌파석", equipment.statue!!).name
+                val nameFusion = materialDao.findItem("융합재료", equipment.statue!!).name
+                val nameGold = materialDao.findItem("골드", 0).name
                 runOnUiThread {
                     binding.layoutItem.visibility = View.VISIBLE
+                    binding.layoutUp.visibility = View.VISIBLE
+                    binding.layoutStone.visibility = View.VISIBLE
+                    binding.layoutFusion.visibility = View.VISIBLE
+                    binding.layoutOther.visibility = View.VISIBLE
                     binding.seekPower.isEnabled = true
-                    binding.layoutMain.visibility = View.VISIBLE
                     binding.txtWarning.visibility = View.GONE
                     viewModel.equipment.value = equipment
                     viewModel.powerSeek.value = equipment.honer
@@ -382,29 +372,35 @@ class UpgradeActivity : AppCompatActivity() {
                             downf = 1
                         }
                         imgUp.setImageResource(resources.getIdentifier("up${upf}_${downf}", "drawable", packageName))
-                        txtUp.text = "${upgrade.enforce}\n/${haveUp}"
+                        txtNameUp.text = nameUp
+                        txtNeedUp.text = "${upgrade.enforce}"
+                        txtUp.text = "$haveUp"
                         if (upgrade.enforce > haveUp) {
-                            txtUp.setTextColor(resources.getColor(R.color.warning_text))
+                            layoutUp.setBackgroundResource(R.drawable.background_item_warning)
                         } else {
-                            txtUp.setTextColor(resources.getColor(R.color.text))
+                            layoutUp.setBackgroundResource(R.drawable.background_item)
                         }
 
                         //돌파석
                         imgStone.setImageResource(resources.getIdentifier("stone${equipment.statue}", "drawable", packageName))
-                        txtStone.text = "${upgrade.stone}\n/${haveStone}"
+                        txtNameStone.text = nameStone
+                        txtNeedStone.text = "${upgrade.stone}"
+                        txtStone.text = "$haveStone"
                         if (upgrade.stone > haveStone) {
-                            txtStone.setTextColor(resources.getColor(R.color.warning_text))
+                            layoutStone.setBackgroundResource(R.drawable.background_item_warning)
                         } else {
-                            txtStone.setTextColor(resources.getColor(R.color.text))
+                            layoutStone.setBackgroundResource(R.drawable.background_item)
                         }
 
                         //융합재료
                         imgFusion.setImageResource(resources.getIdentifier("fusion${equipment.statue}", "drawable", packageName))
-                        txtFusion.text = "${upgrade.ingredient}\n/${haveFusion}"
+                        txtNameFusion.text = nameFusion
+                        txtNeedFusion.text = "${upgrade.ingredient}"
+                        txtFusion.text = "$haveFusion"
                         if (upgrade.ingredient > haveFusion) {
-                            txtFusion.setTextColor(resources.getColor(R.color.warning_text))
+                            layoutFusion.setBackgroundResource(R.drawable.background_item_warning)
                         } else {
-                            txtFusion.setTextColor(resources.getColor(R.color.text))
+                            layoutFusion.setBackgroundResource(R.drawable.background_item)
                         }
 
                         //명예의 파편, 골드
@@ -427,8 +423,11 @@ class UpgradeActivity : AppCompatActivity() {
             } else {
                 handler.post {
                     binding.layoutItem.visibility = View.GONE
+                    binding.layoutUp.visibility = View.GONE
+                    binding.layoutStone.visibility = View.GONE
+                    binding.layoutFusion.visibility = View.GONE
+                    binding.layoutOther.visibility = View.GONE
                     binding.seekPower.isEnabled = false
-                    binding.layoutMain.visibility = View.GONE
                     binding.txtWarning.visibility = View.VISIBLE
                     binding.btnUpgrade.isEnabled = false
                 }

@@ -56,8 +56,8 @@ class MaterialRecyclerAdapter(
 
         fun bind(item: Material, position: Int) {
             with(binding) {
-                val list = App.context().resources.getStringArray(R.array.names)
-                txtName.text = list[item.uid-1]
+                //val list = App.context().resources.getStringArray(R.array.names)
+                txtName.text = item.name
                 txtCount.text = item.count.toString()
                 if (edtCountSubscription != null) {
                     myCompositeDisposable.remove(edtCountSubscription)
@@ -110,7 +110,7 @@ class MaterialRecyclerAdapter(
                             if (it.toString() != "") {
                                 //item.count = it.toString().toInt()
                                 saveState[position] = it.toString().toInt()
-                                Log.d("Change Count", "change value (${list[item.uid-1]}) : ${it.toString().toInt()}")
+                                Log.d("Change Count", "change value (${item.name}) : ${it.toString().toInt()}")
                             }
                         },
                         onComplete = {

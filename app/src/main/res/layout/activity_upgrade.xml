@@ -201,90 +201,241 @@
                 android:enabled="false"
                 android:textColor="@color/text"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/layoutContent"
             app:layout_constraintTop_toBottomOf="@id/layoutItem"
-            android:layout_marginTop="20dp"
-            android:id="@+id/layoutMain"
-            android:orientation="vertical">
-            <LinearLayout
+            android:padding="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <LinearLayout
+                android:id="@+id/layoutUp"
+                android:background="@drawable/background_item"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="10dp">
+                <ImageView
                     android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/background_relics"
+                    android:id="@+id/imgUp"
+                    android:src="@drawable/up1_4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/txtNameUp"
+                    android:text="정제된 파괴강석"
+                    android:textSize="16sp"
+                    android:textColor="@color/text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgUp"
+                    android:layout_marginLeft="10dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgUp"
+                    android:id="@+id/layoutNeedUp"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:background="@drawable/background_relics"
-                        android:id="@+id/imgUp"
-                        android:src="@drawable/up1_4"
-                        android:layout_marginBottom="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNeedUp"
+                        android:text="1250"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    app:layout_constraintLeft_toRightOf="@id/layoutNeedUp"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtUpInfo"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtUp"
-                        android:text="1250\n/9999"
+                        android:text="9999"
                         android:gravity="center"
                         android:textSize="16sp"
-                        android:layout_gravity="center"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_item"
+                android:id="@+id/layoutStone"
+                app:layout_constraintTop_toBottomOf="@id/layoutUp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp">
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/background_relics"
+                    android:id="@+id/imgStone"
+                    android:src="@drawable/stone4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNameStone"
+                    android:text="찬란한 명예의 돌파석"
+                    android:textSize="16sp"
+                    android:textColor="@color/text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgStone"
+                    android:layout_marginLeft="10dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgStone"
+                    android:id="@+id/layoutNeedStone"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNeedStone"
+                        android:text="32"
+                        android:gravity="center"
+                        android:textSize="16sp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:background="@drawable/background_relics"
-                        android:id="@+id/imgStone"
-                        android:src="@drawable/stone4"
-                        android:layout_marginBottom="5dp"/>
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    app:layout_constraintLeft_toRightOf="@id/layoutNeedStone"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtStoneInfo"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtStone"
-                        android:text="32\n/9999"
+                        android:text="9999"
                         android:gravity="center"
                         android:textSize="16sp"
-                        android:layout_gravity="center"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_item"
+                android:id="@+id/layoutFusion"
+                app:layout_constraintTop_toBottomOf="@id/layoutStone"
+                android:layout_marginTop="15dp"
+                android:padding="10dp">
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/background_relics"
+                    android:id="@+id/imgFusion"
+                    android:src="@drawable/fusion4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNameFusion"
+                    android:text="최상급 오레하 융화 재료"
+                    android:textSize="16sp"
+                    android:textColor="@color/text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgFusion"
+                    android:layout_marginLeft="10dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/imgFusion"
+                    android:id="@+id/layoutNeedFusion"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNeedFusion"
+                        android:text="30"
+                        android:gravity="center"
+                        android:textSize="16sp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:background="@drawable/background_relics"
-                        android:id="@+id/imgFusion"
-                        android:src="@drawable/fusion4"
-                        android:layout_marginBottom="5dp"/>
+                    android:orientation="vertical"
+                    android:layout_marginLeft="40dp"
+                    app:layout_constraintLeft_toRightOf="@id/layoutNeedFusion"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="필요한 재료 갯수"
+                        android:textSize="10sp"
+                        android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtFusion"
-                        android:text="30\n/9999"
+                        android:text="9999"
                         android:gravity="center"
                         android:textSize="16sp"
-                        android:layout_gravity="center"
                         android:textColor="@color/text"/>
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:id="@+id/layoutOther"
+                android:padding="10dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutFusion"
+                android:background="@drawable/background_item"
                 android:layout_marginTop="10dp">
                 <ImageView
                     android:layout_width="30sp"
@@ -314,13 +465,6 @@
                     android:textSize="18sp"
                     android:textColor="@color/text"/>
             </LinearLayout>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chkInfinity"
-                android:text="재료 무제한"
-                android:textSize="16sp"
-                android:layout_gravity="center"/>
             <android.widget.Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -329,8 +473,10 @@
                 android:background="@drawable/button_style"
                 style="?android:attr/borderlessButtonStyle"
                 android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/layoutOther"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/text"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

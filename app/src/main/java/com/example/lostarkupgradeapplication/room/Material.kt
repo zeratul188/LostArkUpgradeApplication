@@ -11,5 +11,6 @@ data class Material(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "type") var type: String,
     @ColumnInfo(name = "tier") var tier: Int,
-    @ColumnInfo(name = "count") var count: Int
+    @ColumnInfo(name = "count") var count: Int,
+    @ColumnInfo(name = "name") var name: String
 )
