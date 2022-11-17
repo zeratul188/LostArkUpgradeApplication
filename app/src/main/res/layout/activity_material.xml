@@ -28,7 +28,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/button_style"
             style="?android:attr/borderlessButtonStyle"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:text="적용"
             android:textColor="@color/text"/>
     </LinearLayout>

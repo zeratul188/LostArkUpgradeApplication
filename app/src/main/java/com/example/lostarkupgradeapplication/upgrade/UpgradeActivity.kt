@@ -119,6 +119,20 @@ class UpgradeActivity : AppCompatActivity() {
                 } else {
                     txtPower.text = "${floor(data.power*100)/100}%"
                 }
+                when(data.statue) {
+                    1 -> {
+                        txtName.setTextColor(resources.getColor(R.color.grade_abv_end))
+                    }
+                    2 -> {
+                        txtName.setTextColor(resources.getColor(R.color.grade_hero_end))
+                    }
+                    3 -> {
+                        txtName.setTextColor(resources.getColor(R.color.grade_relics_end))
+                    }
+                    4 -> {
+                        txtName.setTextColor(resources.getColor(R.color.grade_ancient_end))
+                    }
+                }
             }
         }
         viewModel.equipment.observe(this, equipmentObserver)
@@ -239,12 +253,13 @@ class UpgradeActivity : AppCompatActivity() {
                     checkHoner()
                     upgradeDBAdapter.close()
                     binding.btnApplyPower.isEnabled = false
-                    binding.txtHoner.text = "${upgrade.fragments}/${material.count}"
+                    binding.txtNeedHoner.text = upgrade.fragments.toString()
+                    binding.txtHaveHoner.text = "/${material.count}"
                     binding.txtHonerCount.text = "${material.count}"
                     if (upgrade.fragments > material.count) {
-                        binding.txtHoner.setTextColor(resources.getColor(R.color.warning_text))
+                        binding.layoutHoner.setBackgroundResource(R.drawable.background_item_warning)
                     } else {
-                        binding.txtHoner.setTextColor(resources.getColor(R.color.text))
+                        binding.layoutHoner.setBackgroundResource(R.drawable.background_item)
                     }
                 }
             }
@@ -404,17 +419,19 @@ class UpgradeActivity : AppCompatActivity() {
                         }
 
                         //명예의 파편, 골드
-                        txtHoner.text = "${upgrade.fragments}/${haveHoner}"
+                        txtNeedHoner.text = upgrade.fragments.toString()
+                        txtHaveHoner.text = "/$haveHoner"
                         if (upgrade.fragments > haveHoner) {
-                            txtHoner.setTextColor(resources.getColor(R.color.warning_text))
+                            layoutHoner.setBackgroundResource(R.drawable.background_item_warning)
                         } else {
-                            txtHoner.setTextColor(resources.getColor(R.color.text))
+                            layoutHoner.setBackgroundResource(R.drawable.background_item)
                         }
-                        txtGold.text = "${upgrade.gold}/${haveGold}"
+                        txtNeedGold.text = upgrade.gold.toString()
+                        txtHaveGold.text = "/$haveGold"
                         if (upgrade.gold > haveGold) {
-                            txtGold.setTextColor(resources.getColor(R.color.warning_text))
+                            layoutGold.setBackgroundResource(R.drawable.background_item_warning)
                         } else {
-                            txtGold.setTextColor(resources.getColor(R.color.text))
+                            layoutGold.setBackgroundResource(R.drawable.background_item)
                         }
 
                         executePendingBindings()

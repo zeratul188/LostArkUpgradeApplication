@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtContent"
         android:text="Toast Content"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:textColor="@color/text"
         android:layout_gravity="center"/>
 </LinearLayout>

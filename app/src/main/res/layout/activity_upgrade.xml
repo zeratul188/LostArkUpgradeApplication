@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtName"
                 android:text="@{&quot;+&quot;+upgradeViewModel.equipment.level+&quot; &quot;+upgradeViewModel.equipment.name}"
-                android:textSize="18sp"
+                android:textSize="16dp"
                 android:textColor="@color/grade_abv_end"
                 app:layout_constraintLeft_toRightOf="@id/imgEquip"
                 app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
                 android:id="@+id/txtLevel"
                 android:text="@{&quot;Lv.&quot;+upgradeViewModel.equipment.itemlevel}"
                 android:textColor="@color/text"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 app:layout_constraintLeft_toRightOf="@id/imgEquip"
                 app:layout_constraintTop_toBottomOf="@id/txtName"
                 android:layout_marginLeft="10dp"/>
@@ -64,10 +64,10 @@
                     android:id="@+id/txtNowStatue"
                     android:text="@{upgradeViewModel.equipment.level+&quot; 단계&quot;}"
                     android:textColor="@color/text"
-                    android:textSize="18sp"/>
+                    android:textSize="16dp"/>
                 <ImageView
-                    android:layout_width="20sp"
-                    android:layout_height="20sp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"/>
@@ -77,14 +77,14 @@
                     android:id="@+id/txtNowPlusStatue"
                     android:text="@{upgradeViewModel.equipment.level+1+&quot; 단계&quot;}"
                     android:textColor="@color/text"
-                    android:textSize="18sp"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="장인의 기운"
                 android:id="@+id/txtPowerInfo"
-                android:textSize="10sp"
+                android:textSize="10dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutStep"
                 android:layout_marginTop="5dp"
@@ -96,20 +96,20 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtPowerInfo"
                 android:text="@{upgradeViewModel.equipment.getProgress()+&quot;%&quot;}"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:textColor="@color/text"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="15dp"
             android:background="@color/sub_background"
             app:layout_constraintBottom_toBottomOf="parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="명예의 파편 경험치"
-                android:textSize="14sp"
+                android:textSize="12dp"
                 android:id="@+id/txtPowerInfo2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -120,8 +120,10 @@
                 android:id="@+id/seekPower"
                 android:progressDrawable="@drawable/power_seekbar_style"
                 android:layout_marginTop="5dp"
+                android:background="@null"
                 app:layout_constraintTop_toBottomOf="@id/txtPowerInfo2"
-                android:thumb="@drawable/power_seekbar_thumb"/>
+                android:splitTrack="false"
+                android:thumb="@null"/>
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -136,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="보유 중인 명예의 파편"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:textColor="@color/sub_text"
                 android:id="@+id/txtHonerInfo"
                 app:layout_constraintLeft_toRightOf="@id/imgHonerInfo"
@@ -148,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtHonerCount"
                 android:text="999999"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintTop_toBottomOf="@id/txtHonerInfo"
                 app:layout_constraintLeft_toLeftOf="@id/txtHonerInfo"
                 android:textColor="@color/text"/>
@@ -162,7 +164,7 @@
                 app:layout_constraintTop_toBottomOf="@id/seekPower"
                 app:layout_constraintBottom_toTopOf="@id/btnUpgrade"
                 android:enabled="false"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:text="경험치 적용"
                 android:textColor="@color/text"/>
             <TextView
@@ -170,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPowerStatue"
                 android:text="@{upgradeViewModel.powerSeek+&quot;/&quot;+upgradeViewModel.maxSeek}"
-                android:textSize="14sp"
+                android:textSize="12dp"
                 android:textColor="@color/text"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -185,7 +187,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtHonerCount"
                 android:enabled="false"
                 android:text="계승하기"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/text"/>
             <android.widget.Button
@@ -196,7 +198,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:text="장비 재련"
                 android:enabled="false"
                 android:textColor="@color/text"/>
@@ -228,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtNameUp"
                     android:text="정제된 파괴강석"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/text"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/imgUp"
@@ -245,7 +247,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -253,7 +255,7 @@
                         android:id="@+id/txtNeedUp"
                         android:text="1250"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
                 <LinearLayout
@@ -267,8 +269,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtUpInfo"
-                        android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:text="보유 중인 재료 갯수"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -276,7 +278,7 @@
                         android:id="@+id/txtUp"
                         android:text="9999"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -302,7 +304,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtNameStone"
                     android:text="찬란한 명예의 돌파석"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/text"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/imgStone"
@@ -319,7 +321,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -327,7 +329,7 @@
                         android:id="@+id/txtNeedStone"
                         android:text="32"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
                 <LinearLayout
@@ -341,8 +343,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtStoneInfo"
-                        android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:text="보유 중인 재료 갯수"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -350,7 +352,7 @@
                         android:id="@+id/txtStone"
                         android:text="9999"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -376,7 +378,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtNameFusion"
                     android:text="최상급 오레하 융화 재료"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textColor="@color/text"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/imgFusion"
@@ -393,7 +395,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -401,7 +403,7 @@
                         android:id="@+id/txtNeedFusion"
                         android:text="30"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
                 <LinearLayout
@@ -414,8 +416,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="필요한 재료 갯수"
-                        android:textSize="10sp"
+                        android:text="보유 중인 재료 갯수"
+                        android:textSize="10dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -423,7 +425,7 @@
                         android:id="@+id/txtFusion"
                         android:text="9999"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="16dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -431,39 +433,97 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
                 android:id="@+id/layoutOther"
-                android:padding="10dp"
                 app:layout_constraintTop_toBottomOf="@id/layoutFusion"
-                android:background="@drawable/background_item"
-                android:layout_marginTop="10dp">
-                <ImageView
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/power"/>
-                <TextView
-                    android:layout_width="wrap_content"
+                android:layout_marginTop="15dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/txtHoner"
-                    android:text="999999/999999"
-                    android:textSize="18sp"
-                    android:layout_marginRight="30dp"
-                    android:textColor="@color/text"/>
-                <ImageView
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/gold"/>
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:background="@drawable/background_item"
+                    android:id="@+id/layoutHoner"
+                    android:padding="10dp"
+                    android:layout_marginRight="5dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/imgHonerInfo2"
+                        android:src="@drawable/power"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="명예의 파편"
+                        android:textSize="15dp"
+                        app:layout_constraintLeft_toRightOf="@id/imgHonerInfo2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/text"
+                        android:layout_marginLeft="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNeedHoner"
+                        android:text="9999"
+                        android:textSize="15dp"
+                        android:textColor="@color/text"
+                        app:layout_constraintLeft_toRightOf="@id/imgHonerInfo2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginLeft="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtHaveHoner"
+                        android:text="/999999"
+                        app:layout_constraintLeft_toRightOf="@id/txtNeedHoner"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="12dp"
+                        android:textColor="@color/sub_text"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/txtGold"
-                    android:text="9999/9999999"
-                    android:textSize="18sp"
-                    android:textColor="@color/text"/>
+                    android:background="@drawable/background_item"
+                    android:padding="10dp"
+                    android:id="@+id/layoutGold"
+                    android:layout_marginLeft="5dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/imgGoldInfo2"
+                        android:src="@drawable/gold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="골드"
+                        android:textSize="15dp"
+                        app:layout_constraintLeft_toRightOf="@id/imgGoldInfo2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/text"
+                        android:layout_marginLeft="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNeedGold"
+                        android:text="9999"
+                        android:textSize="15dp"
+                        android:textColor="@color/text"
+                        app:layout_constraintLeft_toRightOf="@id/imgGoldInfo2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginLeft="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtHaveGold"
+                        android:text="/999999"
+                        app:layout_constraintLeft_toRightOf="@id/txtNeedGold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="12dp"
+                        android:textColor="@color/sub_text"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
             <android.widget.Button
                 android:layout_width="match_parent"
@@ -472,9 +532,9 @@
                 android:text="부족한 재료 채우기"
                 android:background="@drawable/button_style"
                 style="?android:attr/borderlessButtonStyle"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 app:layout_constraintTop_toBottomOf="@id/layoutOther"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:textColor="@color/text"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
@@ -482,7 +542,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtWarning"
             android:text="재련 단계가 최대인 장비입니다."
-            android:textSize="28sp"
+            android:textSize="28dp"
             android:textColor="@color/warning_text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"

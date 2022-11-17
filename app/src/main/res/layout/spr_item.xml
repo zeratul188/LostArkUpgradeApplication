@@ -5,6 +5,6 @@
     android:id="@+id/txtItem"
     android:padding="10dp"
     android:text="Item Content"
-    android:textSize="16sp"
+    android:textSize="16dp"
     android:gravity="center"
     android:textColor="@color/text"/>

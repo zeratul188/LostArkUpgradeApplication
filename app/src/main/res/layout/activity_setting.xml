@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="앱 설정"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:textColor="@color/text"
                 android:layout_marginBottom="5dp"/>
             <LinearLayout
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="테마 설정"
                         android:layout_gravity="center"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:textColor="@color/text"/>
                     <Spinner
                         android:layout_width="150dp"
@@ -69,14 +69,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="앱 버전"
-                        android:textSize="9sp"
+                        android:textSize="9dp"
                         android:textColor="@color/sub_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtVersion"
                         android:text="1.0.0"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:textColor="@color/text"/>
                 </LinearLayout>
             </LinearLayout>

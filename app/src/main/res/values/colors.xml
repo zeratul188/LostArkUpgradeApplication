@@ -15,8 +15,8 @@
     <color name="sub_background">#f0f0f0</color>
     <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
-    <color name="progress_focus">#9E8C17</color>
-    <color name="background_progress">#888888</color>
+    <color name="progress_focus">#FBA800</color>
+    <color name="background_progress">#BBBBBB</color>
     <color name="upgrade_progress">#0EA1E6</color>
     <color name="upgrade_progress_background">#cccccc</color>
     <color name="fab">#5f70be</color>

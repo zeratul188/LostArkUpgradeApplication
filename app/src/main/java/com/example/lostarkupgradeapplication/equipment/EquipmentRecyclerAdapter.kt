@@ -51,21 +51,28 @@ class EquipmentRecyclerAdapter(
                 when(item.statue) {
                     1 -> {
                         txtName.setTextColor(context.resources.getColor(R.color.grade_abv_end))
+                        txtUpgrade.setTextColor(context.resources.getColor(R.color.grade_abv_end))
                         imgEquip.setBackgroundResource(R.drawable.background_adv)
                     }
                     2 -> {
                         txtName.setTextColor(context.resources.getColor(R.color.grade_hero_end))
+                        txtUpgrade.setTextColor(context.resources.getColor(R.color.grade_hero_end))
                         imgEquip.setBackgroundResource(R.drawable.background_hero)
                     }
                     3 -> {
                         txtName.setTextColor(context.resources.getColor(R.color.grade_relics_end))
+                        txtUpgrade.setTextColor(context.resources.getColor(R.color.grade_relics_end))
                         imgEquip.setBackgroundResource(R.drawable.background_relics)
                     }
                     4 -> {
                         txtName.setTextColor(context.resources.getColor(R.color.grade_ancient_end))
+                        txtUpgrade.setTextColor(context.resources.getColor(R.color.grade_ancient_end))
                         imgEquip.setBackgroundResource(R.drawable.background_ancient)
                     }
-                    else -> txtName.setTextColor(context.resources.getColor(R.color.text))
+                    else -> {
+                        txtName.setTextColor(context.resources.getColor(R.color.text))
+                        txtUpgrade.setTextColor(context.resources.getColor(R.color.text))
+                    }
                 }
                 layoutMain.setOnClickListener {
                     val intent = Intent(App.context(), UpgradeActivity::class.java)

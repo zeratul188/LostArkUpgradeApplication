@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="평균 아이템 레벨"
-                android:textSize="10sp"
+                android:textSize="10dp"
                 android:textColor="@color/sub_text"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -39,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtAllLevel"
                 android:text="@{&quot;Lv.&quot;+mainViewModel.allLevel}"
-                android:textSize="28sp"
-                android:layout_marginTop="5dp"
+                android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtAllLevelInfo"
                 android:textColor="@color/text"/>
@@ -52,7 +51,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:background="@drawable/button_style"
                 android:text="제련 재료"
-                android:textSize="14sp"
+                android:textSize="12dp"
                 android:textColor="@color/text"
                 android:onClick="@{() -> mainViewModel.openMaterial()}"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
