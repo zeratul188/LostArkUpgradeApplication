@@ -13,6 +13,7 @@
     <color name="trans_stroke">#80aaaaaa</color>
     <color name="background">#ffffff</color>
     <color name="sub_background">#f0f0f0</color>
+    <color name="sub_sub_background">#CCCCCC</color>
     <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
     <color name="progress2">#617FEC</color>
@@ -23,6 +24,7 @@
     <color name="fab">#5f70be</color>
     <color name="icon">#222222</color>
     <color name="checked">#617FEC</color>
+    <color name="checked_clicked">#3A509F</color>
     <color name="trans_checked">#40617FEC</color>
     <color name="non_checked">#aaaaaa</color>
 

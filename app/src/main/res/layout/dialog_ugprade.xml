@@ -64,7 +64,7 @@
                     android:text="@{dialog.percent+&quot;%&quot;}"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/text"
-                    android:textSize="16dp"/>
+                    android:textSize="20dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

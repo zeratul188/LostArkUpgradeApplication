@@ -74,7 +74,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edtName"
                 android:textColor="@color/text"
-                android:textSize="16dp"
+                android:background="@drawable/edittext_style"
+                android:padding="7dp"
+                android:textSize="14dp"
                 android:hint="0 ~ 20글자"
                 android:maxLength="20"/>
             <TableLayout
