@@ -4,6 +4,7 @@
         <shape>
             <solid android:color="@color/upgrade_progress_background"/>
             <corners android:radius="100dp"/>
+            <stroke android:width="5dp" android:color="@color/stroke"/>
         </shape>
     </item>
     <item>

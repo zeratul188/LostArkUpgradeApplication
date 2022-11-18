@@ -15,12 +15,16 @@
     <color name="sub_background">#f0f0f0</color>
     <color name="background_clicked">#AAAAAA</color>
     <color name="progress">#F6D91C</color>
+    <color name="progress2">#617FEC</color>
     <color name="progress_focus">#FBA800</color>
     <color name="background_progress">#BBBBBB</color>
     <color name="upgrade_progress">#0EA1E6</color>
     <color name="upgrade_progress_background">#cccccc</color>
     <color name="fab">#5f70be</color>
     <color name="icon">#222222</color>
+    <color name="checked">#617FEC</color>
+    <color name="trans_checked">#40617FEC</color>
+    <color name="non_checked">#aaaaaa</color>
 
     <!-- Font Colors -->
     <color name="text">#000000</color>

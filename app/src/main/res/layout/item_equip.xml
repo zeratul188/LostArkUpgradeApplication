@@ -83,7 +83,7 @@
             android:layout_height="6dp"
             android:layout_marginTop="5dp"
             android:progress="@{equipment.getProgress()}"
-            android:progressDrawable="@drawable/progress_style"
+            android:progressDrawable="@drawable/progress_style2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:max="10000"/>
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtPower"
-            android:text="@{equipment.power+&quot;%&quot;}"
+            android:text="@{equipment.getFloorString()+&quot;%&quot;}"
             android:textSize="10dp"
             android:textColor="@color/text"
             android:layout_marginBottom="5dp"

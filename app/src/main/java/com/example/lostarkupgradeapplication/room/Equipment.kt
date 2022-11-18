@@ -3,6 +3,7 @@ package com.example.lostarkupgradeapplication.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlin.math.floor
 
 @Entity
 data class Equipment (
@@ -18,5 +19,9 @@ data class Equipment (
 ) {
     fun getProgress(): Int {
         return power?.times(100)?.toInt() ?: 0
+    }
+
+    fun getFloorString(): String {
+        return (floor(power*100)/100).toString()
     }
 }
