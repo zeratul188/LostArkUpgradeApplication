@@ -7,4 +7,40 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Customized Colors -->
+    <color name="stroke">#aaaaaa</color>
+    <color name="trans_stroke">#80aaaaaa</color>
+    <color name="background">#ffffff</color>
+    <color name="sub_background">#f0f0f0</color>
+    <color name="sub_sub_background">#CCCCCC</color>
+    <color name="background_clicked">#AAAAAA</color>
+    <color name="progress">#F6D91C</color>
+    <color name="progress2">#617FEC</color>
+    <color name="progress_focus">#FBA800</color>
+    <color name="background_progress">#BBBBBB</color>
+    <color name="upgrade_progress">#0EA1E6</color>
+    <color name="upgrade_progress_background">#cccccc</color>
+    <color name="fab">#5f70be</color>
+    <color name="icon">#222222</color>
+    <color name="checked">#617FEC</color>
+    <color name="checked_clicked">#3A509F</color>
+    <color name="trans_checked">#40617FEC</color>
+    <color name="non_checked">#aaaaaa</color>
+
+    <!-- Font Colors -->
+    <color name="text">#000000</color>
+    <color name="sub_text">#444444</color>
+    <color name="warning_text">#80FF4444</color>
+
+    <!-- 등급별 색상(시작) -->
+    <color name="grade_abv_start">#25334E</color>
+    <color name="grade_hero_start">#553C30</color>
+    <color name="grade_relics_start">#322722</color>
+    <color name="grade_ancient_start">#696757</color>
+    <!-- 등급별 색상(끝) -->
+    <color name="grade_abv_end">#3171EF</color>
+    <color name="grade_hero_end">#FF854D</color>
+    <color name="grade_relics_end">#9E3905</color>
+    <color name="grade_ancient_end">#F6ECA2</color>
 </resources>

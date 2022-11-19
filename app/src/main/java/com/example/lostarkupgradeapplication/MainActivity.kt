@@ -1,21 +1,159 @@
 package com.example.lostarkupgradeapplication
 
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lostarkupgradeapplication.databinding.ActivityMainBinding
+import com.example.lostarkupgradeapplication.equipment.EquipmentRecyclerAdapter
+import com.example.lostarkupgradeapplication.room.*
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Math.floor
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var db: EquipmentDatabase
+    private lateinit var dao: EquipmentDao
+    private lateinit var materialDB: MaterialDatabase
+    private lateinit var materialDao: MaterialDao
+    private var items = ArrayList<Equipment>()
+    private lateinit var equipmentAdapter: EquipmentRecyclerAdapter
+
+    private val handler = Handler()
+    private val myCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.mainViewModel = viewModel
+        title = "로스트아크 재련 시뮬레이션"
 
+        db = EquipmentDatabase.getInstance(this)!!
+        dao = db?.equipmentDao()!!
+        materialDB = MaterialDatabase.getInstance(this)!!
+        materialDao = materialDB?.materialDao()!!
 
+        val dataObserver = Observer<Double> { data ->
+            binding.txtAllLevel.text = "Lv.$data"
+        }
+        viewModel.allLevel.observe(this, dataObserver)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            items = (dao?.getAll() as ArrayList<Equipment>?)!!
+            equipmentAdapter = EquipmentRecyclerAdapter(items, this@MainActivity, myCompositeDisposable, viewModel)
+            handler.post {
+                binding.listView.adapter = equipmentAdapter
+                val spaceDecoration = VerticalSpaceItemDecoration(20)
+                binding.listView.addItemDecoration(spaceDecoration)
+            }
+        }
+
+        initData()
+    }
+
+    // 초기값 설정
+    private fun initData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            var list = dao?.getAll()!!
+            if (list.isEmpty()) {
+                val types = resources.getStringArray(R.array.type)
+                var index = 1
+                var level = 0.0
+                println(types.size)
+                types.forEach {
+                    val item = Equipment(index, "기본 $it", it, 6, 1325, 0.0, 0, 1, 0)
+                    index++
+                    db?.equipmentDao()?.insertAll(item)
+                }
+                list = dao?.getAll()!!
+                items.clear()
+                items.addAll(list)
+                handler.post {
+                    equipmentAdapter.notifyDataSetChanged()
+                }
+            }
+            var materials = materialDao.getAll()
+            if (materials.isEmpty()) {
+                val mts = ArrayList<Material>()
+                mts.add(Material(1, "파편", 0, 0, "명예의 파편"))
+                mts.add(Material(2, "파괴", 1, 0, "파괴석 결정"))
+                mts.add(Material(3, "파괴", 3, 0, "파괴강석"))
+                mts.add(Material(4, "파괴", 4, 0, "정제된 파괴강석"))
+                mts.add(Material(5, "수호", 1, 0, "수호석 결정"))
+                mts.add(Material(6, "수호", 3, 0, "수호강석"))
+                mts.add(Material(7, "수호", 4, 0, "정제된 수호강석"))
+                val stones = arrayOf<String>("명예의 돌파석", "위대한 명예의 돌파석", "경이로운 명예의 돌파석", "찬란한 명예의 돌파석")
+                for (i in 1..4) {
+                    mts.add(Material(7+i, "돌파석", i, 0, stones[i-1]))
+                }
+                val fusions = arrayOf("하급 오레하 융화 재료", "중급 오레하 융화 재료", "상급 오레하 융화 재료", "최상급 오레하 융화 재료")
+                for (i in 1..4) {
+                    mts.add(Material(11+i, "융합재료", i, 0, fusions[i-1]))
+                }
+                mts.add(Material(16, "골드", 0, 0, "골드"))
+                val suns = arrayOf("태양의 은총", "태양의 축복", "태양의 가호")
+                for (i in 1..3) {
+                    mts.add(Material(16+i, "태양", i, 0, suns[i-1]))
+                }
+                mts.forEach { material ->
+                    materialDB.materialDao().insertAll(material)
+                }
+            }
+        }
+    }
+    /*
+     * type : 무기, 투구 등등
+     * level : 6
+     * item_level : 1325
+     * power : 0
+     * honer : 0
+     * statue : 1
+     * stack : 0
+     */
+
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = dao?.getAll()!!
+            var level = 0.0
+            items.clear()
+            items.addAll(list)
+            list.forEach { item ->
+                level += item.itemlevel
+            }
+            level /= items.size
+            level = floor(level*100)/100
+            viewModel.allLevel.postValue(level)
+            handler.post {
+                equipmentAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        myCompositeDisposable.clear()
+        super.onDestroy()
+    }
+
+    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int): RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.bottom = verticalSpaceHeight
+        }
     }
 }

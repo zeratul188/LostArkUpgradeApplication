@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">LostArk Upgrade Application</string>
+
+    <!-- 장비 종류 -->
+    <string-array name="type">
+        <item>무기</item>
+        <item>투구</item>
+        <item>상의</item>
+        <item>하의</item>
+        <item>장갑</item>
+        <item>견갑</item>
+    </string-array>
+
+    <string-array name="names">
+        <item>명예의 파편</item>
+        <item>파괴석 결정</item>
+        <item>파괴강석</item>
+        <item>정제된 파괴강석</item>
+        <item>수호석 결정</item>
+        <item>수호강석</item>
+        <item>정제된 수호강석</item>
+        <item>명예의 돌파석</item>
+        <item>위대한 명예의 돌파석</item>
+        <item>경이로운 명예의 돌파석</item>
+        <item>찬란한 명예의 돌파석</item>
+        <item>하급 오레하 융화 재료</item>
+        <item>중급 오레하 융화 재료</item>
+        <item>상급 오레하 융화 재료</item>
+        <item>최상급 오레하 융화 재료</item>
+        <item>골드</item>
+        <item>태양의 은총</item>
+        <item>태양의 축복</item>
+        <item>태양의 가호</item>
+    </string-array>
+
+    <string-array name="tier">
+        <item>희귀 ~ 영웅 장비</item>
+        <item>전설 ~ 유물 장비</item>
+        <item>아브렐슈드 장비</item>
+        <item>일리아칸 장비</item>
+    </string-array>
 </resources>
